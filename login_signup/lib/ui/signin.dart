@@ -5,10 +5,12 @@ import 'dart:convert' show Utf8Decoder, json, utf8;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:login_signup/Database/Host.dart';
 import 'package:login_signup/Model/LoginModel.dart';
 import 'package:login_signup/components/HomeAdmin.dart';
 import 'package:login_signup/components/HomeUser.dart';
 import 'package:login_signup/constants/constants.dart';
+import 'package:login_signup/controller/loginController.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/responsive_ui.dart';
 import 'package:login_signup/ui/widgets/textformfield.dart';
@@ -222,99 +224,64 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Future<List<LoginModel>> getLoginData() async {
-    final String url = "https://cityzen2021.herokuapp.com/api/login";
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      var Datas = json.decode(response.body);
-      return Datas.map<LoginModel>((json) => LoginModel.fromJson(json))
-          .toList();
-    } else {
-      throw Exception('Unable to fetch products from the REST API');
-    }
-  }
-
-  Future<List<LoginModel>> InsertLoginData() async {
-    final String url = "https://cityzen2021.herokuapp.com/api/login";
-    final response = await http.post(Uri.parse(url));
-    if (response.statusCode == 200) {
-      var Datas = json.decode(response.body);
-      return Datas.map<LoginModel>((json) => LoginModel.fromJson(json))
-          .toList();
-    } else {
-      throw Exception('Unable to fetch products from the REST API');
-    }
-  }
-
   Widget button() {
-    return FutureBuilder<List<LoginModel>>(
-        future: getLoginData(),
+    return FutureBuilder<String>(
         // ignore: missing_return
         builder: (context, snapshot) {
-          final List<LoginModel> response = snapshot.data;
-          // ignore: deprecated_member_use
-          return RaisedButton(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0)),
-            onPressed: () {
-              print("ID ใน DB => " + response[0].ID);
-              print("USERNAME ใน DB => " + response[0].USERNAME);
-              print("PASSWORD ใน DB => " + response[0].PASSWORD);
-              print("ประเภทผู้ใช้ ใน DB => " + response[0].TYPE);
-              print("Email input : " + emailController);
-              print("Password input : " + passwordController);
+      // ignore: deprecated_member_use
+      return RaisedButton(
+        elevation: 0,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        onPressed: () {
+          var email = emailController;
+          var password = passwordController;
+          var status = getLoginData(email, password).toString();
 
-              var email = emailController;
-              var password = passwordController;
-              if (email == "user" && password == "654321") {
-                Scaffold.of(context)
-                    // ignore: deprecated_member_use
-                    .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
-                Timer _timer =
-                    new Timer(const Duration(milliseconds: 1000), () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeUser()),
-                  );
-                });
-              } else if (email == "admin" && password == "654321") {
-                Scaffold.of(context)
-                    // ignore: deprecated_member_use
-                    .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
-                Timer _timer =
-                    new Timer(const Duration(milliseconds: 1000), () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeAdmin()),
-                  );
-                });
-              }
-              {
-                Scaffold.of(context).showSnackBar(
-                    SnackBar(content: Text('เข้าสู่ระบบผิดพลาด!')));
-              }
-            },
-            textColor: Colors.white,
-            padding: EdgeInsets.all(0.0),
-            child: Container(
-              alignment: Alignment.center,
-              width: _large
-                  ? _width / 4
-                  : (_medium ? _width / 3.75 : _width / 3.5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                gradient: LinearGradient(
-                  colors: <Color>[Colors.orange[200], Colors.pinkAccent],
-                ),
-              ),
-              padding: const EdgeInsets.all(12.0),
-              child: Text('เข้าสู่ระบบ',
-                  style:
-                      TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10))),
+          print("Status : " + status);
+          if (email == "user" && password == "654321") {
+            Scaffold.of(context)
+                // ignore: deprecated_member_used
+                .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
+            Timer _timer = new Timer(const Duration(milliseconds: 1000), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeUser()),
+              );
+            });
+          } else if (email == "admin" && password == "654321") {
+            Scaffold.of(context)
+                // ignore: deprecated_member_use
+                .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
+            Timer _timer = new Timer(const Duration(milliseconds: 1000), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeAdmin()),
+              );
+            });
+          }
+          {
+            Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบผิดพลาด!')));
+          }
+        },
+        textColor: Colors.white,
+        padding: EdgeInsets.all(0.0),
+        child: Container(
+          alignment: Alignment.center,
+          width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            gradient: LinearGradient(
+              colors: <Color>[Colors.orange[200], Colors.pinkAccent],
             ),
-          );
-        });
+          ),
+          padding: const EdgeInsets.all(12.0),
+          child: Text('เข้าสู่ระบบ',
+              style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10))),
+        ),
+      );
+    });
   }
 
   Widget signUpTextRow() {
