@@ -5,7 +5,6 @@ import 'dart:convert' show Utf8Decoder, json, utf8;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:login_signup/Database/Host.dart';
 import 'package:login_signup/Model/LoginModel.dart';
 import 'package:login_signup/components/HomeAdmin.dart';
