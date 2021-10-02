@@ -1,49 +1,23 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:login_signup/models/register.dart';
+import 'package:login_signup/ui/DashboardAdmin/item_card.dart';
 
 class Manager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 110,
-          width: 370,
-          decoration: BoxDecoration(
-            color: (Colors.amberAccent),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Expanded(
-              child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1),
-                  itemBuilder: (context, index) => Itemcard())),
-        )
-      ],
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: ListView.builder(
+        itemCount: users.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: EdgeInsets.all(8),
+            child: Itemcard(person: users[index]),
+          );
+        },
+      ),
     );
   }
 }
 
-class Itemcard extends StatelessWidget {
-  const Itemcard({
-    Key key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Row(
-          children: [Text("data")],
-        ),
-        Row(
-          children: [Text("data")],
-        ),
-        Row(
-          children: [Text("data")],
-        )
-      ],
-    );
-  }
-}

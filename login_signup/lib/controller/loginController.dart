@@ -10,24 +10,24 @@ Future<dynamic> getLoginData(usernmae, password) async {
   print(response.body);
   print("User : " + usernmae);
   print("Password : " + password);
-  var Datas = json.decode(response.body);
-  print(Datas);
+  var datas = json.decode(response.body);
+  print(datas);
 
   String statusLogin = "";
-  if (Datas != false) {
-    statusLogin = Datas;
+  if (datas != false) {
+    statusLogin = datas;
   } else {
     statusLogin = "false";
   }
   return statusLogin;
 }
 
-Future<List<LoginModel>> InsertLoginData() async {
+Future<List<LoginModel>> insertLoginData() async {
   final String url = Host + "/api/login";
   final response = await http.post(Uri.parse(url));
   if (response.statusCode == 200) {
-    var Datas = json.decode(response.body);
-    return Datas.map<LoginModel>((json) => LoginModel.fromJson(json)).toList();
+    var datas = json.decode(response.body);
+    return datas.map<LoginModel>((json) => LoginModel.fromJson(json)).toList();
   } else {
     throw Exception('Unable to fetch products from the REST API');
   }
