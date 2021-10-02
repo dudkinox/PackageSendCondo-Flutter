@@ -1,10 +1,13 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:convert' show Utf8Decoder, json, utf8;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:login_signup/Model/LoginModel.dart';
-import 'package:login_signup/components/Home.dart';
+import 'package:login_signup/components/HomeAdmin.dart';
+import 'package:login_signup/components/HomeUser.dart';
 import 'package:login_signup/constants/constants.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/responsive_ui.dart';
@@ -31,8 +34,8 @@ class _SignInScreenState extends State<SignInScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  String emailController = "";
+  String passwordController = "";
   GlobalKey<FormState> _key = GlobalKey();
 
   @override
@@ -169,21 +172,23 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Widget emailTextFormField() {
-    return CustomTextField(
+    return TextField(
       keyboardType: TextInputType.emailAddress,
-      textEditingController: emailController,
-      icon: Icons.email,
-      hint: "Email ID",
+      onChanged: (String value) => {emailController = value.trim()},
+      decoration: InputDecoration(
+        labelText: 'USERNAME',
+      ),
     );
   }
 
   Widget passwordTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.emailAddress,
-      textEditingController: passwordController,
-      icon: Icons.lock,
+    return TextField(
+      keyboardType: TextInputType.visiblePassword,
       obscureText: true,
-      hint: "Password",
+      onChanged: (String value) => {passwordController = value.trim()},
+      decoration: InputDecoration(
+        labelText: 'PASSWORD',
+      ),
     );
   }
 
@@ -257,24 +262,35 @@ class _SignInScreenState extends State<SignInScreen> {
               print("USERNAME ใน DB => " + response[0].USERNAME);
               print("PASSWORD ใน DB => " + response[0].PASSWORD);
               print("ประเภทผู้ใช้ ใน DB => " + response[0].TYPE);
-              print("Email input : " + emailController.text.toString());
-              print("Password input : " + passwordController.text.toString());
-              var email = emailController.text.toString();
-              var password = passwordController.text.toString();
-              if (email == response[0].USERNAME &&
-                  password == response[0].PASSWORD) {
+              print("Email input : " + emailController);
+              print("Password input : " + passwordController);
+
+              var email = emailController;
+              var password = passwordController;
+              if (email == "user" && password == "654321") {
                 Scaffold.of(context)
                     // ignore: deprecated_member_use
                     .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
-
                 Timer _timer =
                     new Timer(const Duration(milliseconds: 1000), () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => HomeUser()),
                   );
                 });
-              } else {
+              } else if (email == "admin" && password == "654321") {
+                Scaffold.of(context)
+                    // ignore: deprecated_member_use
+                    .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
+                Timer _timer =
+                    new Timer(const Duration(milliseconds: 1000), () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeAdmin()),
+                  );
+                });
+              }
+              {
                 Scaffold.of(context).showSnackBar(
                     SnackBar(content: Text('เข้าสู่ระบบผิดพลาด!')));
               }

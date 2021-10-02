@@ -43,9 +43,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: _height / 35,
                 ),
                 button(),
-                infoTextRow(),
-                socialIconsRow(),
-                //signInTextRow(),
+                // infoTextRow(),
+                // socialIconsRow(),
+                // signInTextRow(),
               ],
             ),
           ),
@@ -146,11 +146,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
             SizedBox(height: _height / 60.0),
             lastNameTextFormField(),
             SizedBox(height: _height / 60.0),
+            roomNumberTextFormField(),
+            SizedBox(height: _height / 60.0),
             emailTextFormField(),
             SizedBox(height: _height / 60.0),
             phoneTextFormField(),
             SizedBox(height: _height / 60.0),
             passwordTextFormField(),
+            SizedBox(height: _height / 60.0),
+            checkpasswordTextFormField(),
           ],
         ),
       ),
@@ -170,6 +174,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       icon: Icons.person,
       hint: "นามสกุล",
+    );
+  }
+
+  Widget roomNumberTextFormField() {
+    return CustomTextField(
+      keyboardType: TextInputType.number,
+      icon: Icons.meeting_room_outlined,
+      hint: "หมายเลขห้อง",
     );
   }
 
@@ -195,6 +207,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       obscureText: true,
       icon: Icons.lock,
       hint: "รหัสผ่าน",
+    );
+  }
+
+  Widget checkpasswordTextFormField() {
+    return CustomTextField(
+      keyboardType: TextInputType.text,
+      obscureText: true,
+      icon: Icons.lock,
+      hint: "ยืนยันรหัสผ่าน",
     );
   }
 
@@ -247,52 +268,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           'สมัครสมาชิก',
           style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10)),
         ),
-      ),
-    );
-  }
-
-  Widget infoTextRow() {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 40.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "สร้างบัญชีโดยใช้โซเชียลมีเดีย",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: _large ? 12 : (_medium ? 11 : 10)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget socialIconsRow() {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 80.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          CircleAvatar(
-            radius: 15,
-            backgroundImage: AssetImage("assets/images/googlelogo.png"),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          CircleAvatar(
-            radius: 15,
-            backgroundImage: AssetImage("assets/images/fblogo.jpg"),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          CircleAvatar(
-            radius: 15,
-            backgroundImage: AssetImage("assets/images/twitterlogo.jpg"),
-          ),
-        ],
       ),
     );
   }
