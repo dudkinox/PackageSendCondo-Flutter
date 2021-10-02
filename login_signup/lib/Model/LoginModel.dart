@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class LoginModel {
   final String ID;
   final String USERNAME;
