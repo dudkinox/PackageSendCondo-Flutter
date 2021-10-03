@@ -15,7 +15,7 @@ class Itemcard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: (Colors.amberAccent),
+        color: (Colors.orange[200]),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Column(
