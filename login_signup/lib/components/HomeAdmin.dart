@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:login_signup/components/InfiniteScroll.dart';
 import 'package:login_signup/ui/DashboardAdmin/ManageRegister.dart';
-import 'package:login_signup/ui/DashboardAdmin/dashboard.dart';
+import 'package:login_signup/ui/DashboardAdmin/NotiPage.dart';
 
 class HomeAdmin extends StatefulWidget {
   const HomeAdmin({Key key}) : super(key: key);
@@ -34,7 +34,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         body: TabBarView(
           children: <Widget>[
             Manager(),
-            dashboard(),
+            NotiPage(),
           ],
         ),
       ),

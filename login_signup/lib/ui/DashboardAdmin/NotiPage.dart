@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:login_signup/constants/constants.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/customappbar.dart';
 import 'package:login_signup/ui/widgets/responsive_ui.dart';
 import 'package:login_signup/ui/widgets/textformfield.dart';
 
-class SignUpScreen extends StatefulWidget {
-  @override
-  _SignUpScreenState createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
+class NotiPage extends StatelessWidget {
   bool checkBoxValue = false;
   double _height;
   double _width;
@@ -37,8 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: <Widget>[
                 Opacity(opacity: 0.88, child: CustomAppBar()),
                 clipShape(),
-                form(),
-                acceptTermsTextRow(),
+                form(context),
                 SizedBox(
                   height: _height / 35,
                 ),
@@ -135,33 +128,133 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget form() {
+  Widget form(context) {
     return Container(
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 20.0),
       child: Form(
         child: Column(
           children: <Widget>[
-            firstNameTextFormField(),
-            SizedBox(height: _height / 60.0),
-            lastNameTextFormField(),
-            SizedBox(height: _height / 60.0),
-            roomNumberTextFormField(),
-            SizedBox(height: _height / 60.0),
-            emailTextFormField(),
-            SizedBox(height: _height / 60.0),
-            phoneTextFormField(),
-            SizedBox(height: _height / 60.0),
-            passwordTextFormField(),
-            SizedBox(height: _height / 60.0),
-            checkpasswordTextFormField(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'ชื่อผู้รับ',
+                  style: DefaultTextStyle.of(context)
+                      .style
+                      .apply(fontSizeFactor: 2.0),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            nameTextFormField(),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'หมายเลขห้อง',
+                  style: DefaultTextStyle.of(context)
+                      .style
+                      .apply(fontSizeFactor: 2.0),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            roomTextFormField(),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'รายละเอียด',
+                  style: DefaultTextStyle.of(context)
+                      .style
+                      .apply(fontSizeFactor: 2.0),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            detailTextFormField(),
+            SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget firstNameTextFormField() {
+  // return Container(
+  //   margin: EdgeInsets.all(20),
+  //   child: Column(
+  //     children: [
+  //       Row(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Text(
+  //             'เพิ่มรูป',
+  //             style: DefaultTextStyle.of(context)
+  //                 .style
+  //                 .apply(fontSizeFactor: 2.0),
+  //           ),
+  //         ],
+  //       ),
+  //       SizedBox(height: 20),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Text(
+  //             'ชื่อผู้รับ',
+  //             style: DefaultTextStyle.of(context)
+  //                 .style
+  //                 .apply(fontSizeFactor: 2.0),
+  //           ),
+  //         ],
+  //       ),
+  //       SizedBox(height: 20),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Text(
+  //             'หมายเลขห้อง',
+  //             style: DefaultTextStyle.of(context)
+  //                 .style
+  //                 .apply(fontSizeFactor: 2.0),
+  //           ),
+  //         ],
+  //       ),
+  //       SizedBox(height: 20),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Text(
+  //             'รายละเอียด',
+  //             style: DefaultTextStyle.of(context)
+  //                 .style
+  //                 .apply(fontSizeFactor: 2.0),
+  //           ),
+  //         ],
+  //       ),
+  //     ],
+  //   ),
+  // );
+
+  Widget nameTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
       icon: Icons.person,
@@ -169,78 +262,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget lastNameTextFormField() {
+  Widget roomTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
-      icon: Icons.person,
-      hint: "นามสกุล",
-    );
-  }
-
-  Widget roomNumberTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.number,
       icon: Icons.meeting_room_outlined,
       hint: "หมายเลขห้อง",
     );
   }
 
-  Widget emailTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.emailAddress,
-      icon: Icons.email,
-      hint: "อีเมล ไอดี",
-    );
-  }
-
-  Widget phoneTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.number,
-      icon: Icons.phone,
-      hint: "เบอร์โทร",
-    );
-  }
-
-  Widget passwordTextFormField() {
+  Widget detailTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
-      obscureText: true,
-      icon: Icons.lock,
-      hint: "รหัสผ่าน",
-    );
-  }
-
-  Widget checkpasswordTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      obscureText: true,
-      icon: Icons.lock,
-      hint: "ยืนยันรหัสผ่าน",
-    );
-  }
-
-  Widget acceptTermsTextRow() {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 100.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Checkbox(
-              activeColor: Colors.orange[200],
-              value: checkBoxValue,
-              onChanged: (bool newValue) {
-                setState(() {
-                  checkBoxValue = newValue;
-                });
-              }),
-          Text(
-            "ยอมรับข้อกำหนดและเงื่อนไขทั้งหมด",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: _large ? 12 : (_medium ? 11 : 10)),
-          ),
-        ],
-      ),
+      icon: Icons.person,
+      hint: "รายละเอียด",
     );
   }
 
@@ -249,7 +283,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        print("Routing to your account");
+        print("Routing to your service");
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
@@ -265,40 +299,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         padding: const EdgeInsets.all(12.0),
         child: Text(
-          'สมัครสมาชิก',
+          'ยืนยันรายการ',
           style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10)),
         ),
-      ),
-    );
-  }
-
-  Widget signInTextRow() {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "มีบัญชีนี้อยู่แล้ว?",
-            style: TextStyle(fontWeight: FontWeight.w400),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop(SIGN_IN);
-              print("Routing to Sign up screen");
-            },
-            child: Text(
-              "Sign in",
-              style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: Colors.orange[200],
-                  fontSize: 19),
-            ),
-          )
-        ],
       ),
     );
   }
