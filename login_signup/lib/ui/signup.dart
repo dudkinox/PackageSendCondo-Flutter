@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup/constants/constants.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
@@ -6,6 +7,7 @@ import 'package:login_signup/ui/widgets/responsive_ui.dart';
 import 'package:login_signup/ui/widgets/textformfield.dart';
 
 class SignUpScreen extends StatefulWidget {
+  TextEditingController name = new TextEditingController();
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -17,6 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+  TextEditingController name = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -166,6 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       icon: Icons.person,
       hint: "ชื่อ",
+      textEditingController: name,
     );
   }
 
@@ -212,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget checkpasswordTextFormField() {
     return CustomTextField(
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.visiblePassword,
       obscureText: true,
       icon: Icons.lock,
       hint: "ยืนยันรหัสผ่าน",
@@ -249,7 +253,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        print("Routing to your account");
+        print("input => " + name.text);
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
