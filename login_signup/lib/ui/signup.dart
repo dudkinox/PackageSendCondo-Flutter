@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/constants/constants.dart';
+import 'package:login_signup/controller/loginController.dart';
+import 'package:login_signup/ui/signin.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/customappbar.dart';
 import 'package:login_signup/ui/widgets/responsive_ui.dart';
@@ -8,6 +11,12 @@ import 'package:login_signup/ui/widgets/textformfield.dart';
 
 class SignUpScreen extends StatefulWidget {
   TextEditingController name = new TextEditingController();
+  TextEditingController lastname = new TextEditingController();
+  TextEditingController roomnumber = new TextEditingController();
+  TextEditingController email = new TextEditingController();
+  TextEditingController phone = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+  TextEditingController checkpassword = new TextEditingController();
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -20,6 +29,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _large;
   bool _medium;
   TextEditingController name = new TextEditingController();
+  TextEditingController lastname = new TextEditingController();
+  TextEditingController roomnumber = new TextEditingController();
+  TextEditingController email = new TextEditingController();
+  TextEditingController phone = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+  TextEditingController checkpassword = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Opacity(opacity: 0.88, child: CustomAppBar()),
                 clipShape(),
                 form(),
-                acceptTermsTextRow(),
+
                 SizedBox(
                   height: _height / 35,
                 ),
@@ -116,24 +131,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: Colors.orange[200],
               )),
         ),
-//        Positioned(
-//          top: _height/8,
-//          left: _width/1.75,
-//          child: Container(
-//            alignment: Alignment.center,
-//            height: _height/23,
-//            padding: EdgeInsets.all(5),
-//            decoration: BoxDecoration(
-//              shape: BoxShape.circle,
-//              color:  Colors.orange[100],
-//            ),
-//            child: GestureDetector(
-//                onTap: (){
-//                  print('Adding photo');
-//                },
-//                child: Icon(Icons.add_a_photo, size: _large? 22: (_medium? 15: 13),)),
-//          ),
-//        ),
       ],
     );
   }
@@ -178,6 +175,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       icon: Icons.person,
       hint: "นามสกุล",
+      textEditingController: lastname,
     );
   }
 
@@ -186,6 +184,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.number,
       icon: Icons.meeting_room_outlined,
       hint: "หมายเลขห้อง",
+      textEditingController: roomnumber,
     );
   }
 
@@ -194,6 +193,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.emailAddress,
       icon: Icons.email,
       hint: "อีเมล ไอดี",
+      textEditingController: email,
     );
   }
 
@@ -202,6 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.number,
       icon: Icons.phone,
       hint: "เบอร์โทร",
+      textEditingController: phone,
     );
   }
 
@@ -211,40 +212,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
       obscureText: true,
       icon: Icons.lock,
       hint: "รหัสผ่าน",
+      textEditingController: password,
     );
   }
 
   Widget checkpasswordTextFormField() {
     return CustomTextField(
-      keyboardType: TextInputType.visiblePassword,
+      keyboardType: TextInputType.text,
       obscureText: true,
       icon: Icons.lock,
       hint: "ยืนยันรหัสผ่าน",
-    );
-  }
-
-  Widget acceptTermsTextRow() {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 100.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Checkbox(
-              activeColor: Colors.orange[200],
-              value: checkBoxValue,
-              onChanged: (bool newValue) {
-                setState(() {
-                  checkBoxValue = newValue;
-                });
-              }),
-          Text(
-            "ยอมรับข้อกำหนดและเงื่อนไขทั้งหมด",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: _large ? 12 : (_medium ? 11 : 10)),
-          ),
-        ],
-      ),
+      textEditingController: checkpassword,
     );
   }
 
@@ -252,8 +230,75 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () {
-        print("input => " + name.text);
+      onPressed: () async {
+        if (name.text == "") {
+          showDialog(
+              context: context,
+              builder: (_) => AlertMessage("แจ้งเตือน", "กรุณากรอกชื่อ", null));
+        } else {
+          if (lastname.text == "") {
+            showDialog(
+                context: context,
+                builder: (_) =>
+                    AlertMessage("แจ้งเตือน", "กรุณากรอกนามสกุล", null));
+          } else {
+            if (roomnumber.text == "") {
+              showDialog(
+                  context: context,
+                  builder: (_) =>
+                      AlertMessage("แจ้งเตือน", "กรุณากรอกหมายเลขห้อง", null));
+            } else {
+              if (email.text == "") {
+                showDialog(
+                    context: context,
+                    builder: (_) =>
+                        AlertMessage("แจ้งเตือน", "กรุณากรอกอีเมล์", null));
+              } else {
+                if (phone.text == "") {
+                  showDialog(
+                      context: context,
+                      builder: (_) => AlertMessage(
+                          "แจ้งเตือน", "กรุณากรอกหมายเลขโทรศัพท์", null));
+                } else {
+                  if (password.text == "") {
+                    showDialog(
+                        context: context,
+                        builder: (_) => AlertMessage(
+                            "แจ้งเตือน", "กรุณากรอกรหัสผ่าน", null));
+                  } else {
+                    if (checkpassword.text == "") {
+                      showDialog(
+                          context: context,
+                          builder: (_) => AlertMessage(
+                              "แจ้งเตือน", "กรุณากรอกยืนยันรหัสผ่าน", null));
+                    } else {
+                      if (checkpassword.text != password.text) {
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertMessage(
+                                "แจ้งเตือน", "รหัสผ่านไม่ตรงกัน", null));
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertMessage(
+                                "แจ้งเตือน", "สมัครบัญชีสำเร็จ", SignInPage()));
+                        final String status = await Register(
+                          name.text,
+                          lastname.text,
+                          roomnumber.text,
+                          email.text,
+                          phone.text,
+                          password.text,
+                        );
+                        print(status);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

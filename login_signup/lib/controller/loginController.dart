@@ -16,7 +16,11 @@ Future<dynamic> getLoginData(String username, String password) async {
 }
 
 Future<String> Register(
-  String username,
+  String name,
+  String lastname,
+  String room,
+  String email,
+  String phone,
   String password,
 ) async {
   try {
@@ -28,7 +32,11 @@ Future<String> Register(
       },
       body: jsonEncode(<String, String>{
         "type": "user",
-        "username": username,
+        "name": name,
+        "lastname": lastname,
+        "room": room,
+        "email": email,
+        "phone": phone,
         "password": password
       }),
     );

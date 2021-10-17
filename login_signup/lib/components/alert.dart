@@ -26,7 +26,7 @@ class AlertMessage extends StatelessWidget {
                 Navigator.pop(context),
               },
           },
-          child: Text("ยอมรับ"),
+          child: Text("ตกลง"),
         ),
       ],
     );
