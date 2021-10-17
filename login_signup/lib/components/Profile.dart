@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:login_signup/ui/signin.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -273,6 +274,7 @@ class MapScreenState extends State<ProfilePage>
                               ),
                             ],
                           )),
+                      _getActionButtons1(),
                       Container(
                         padding:
                             EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
@@ -306,6 +308,38 @@ class MapScreenState extends State<ProfilePage>
         ],
       ),
     ));
+  }
+
+  Widget _getActionButtons1() {
+    return Padding(
+      padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
+      child: new Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(),
+              child: Container(
+                  child: new RaisedButton(
+                child: new Text("Log out"),
+                textColor: Colors.white,
+                color: Colors.red[600],
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInPage()),
+                  );
+                },
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(20.0)),
+              )),
+            ),
+            flex: 2,
+          ),
+        ],
+      ),
+    );
   }
 
   @override
