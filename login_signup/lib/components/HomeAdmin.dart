@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_signup/components/InfiniteScroll.dart';
+import 'package:login_signup/components/Wipper.dart';
 import 'package:login_signup/ui/DashboardAdmin/ManageRegister.dart';
 import 'package:login_signup/ui/DashboardAdmin/NotiPage.dart';
 
@@ -16,26 +17,29 @@ class _HomeAdminState extends State<HomeAdmin> {
   );
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text('ผู้ดูแลระบบ'),
-          centerTitle: true,
-          backgroundColor: Color(0xFFFEA4B0),
-          bottom: const TabBar(
-            tabs: <Widget>[
-              Tab(text: 'จัดการผู้ใช้'),
-              Tab(text: 'ส่งแจ้งเตือน'),
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: const Text('ผู้ดูแลระบบ'),
+            centerTitle: true,
+            backgroundColor: Color(0xFFFEA4B0),
+            bottom: const TabBar(
+              tabs: <Widget>[
+                Tab(text: 'จัดการผู้ใช้'),
+                Tab(text: 'ส่งแจ้งเตือน'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: <Widget>[
+              Manager(),
+              NotiPage(),
             ],
           ),
-        ),
-        body: TabBarView(
-          children: <Widget>[
-            Manager(),
-            NotiPage(),
-          ],
         ),
       ),
     );

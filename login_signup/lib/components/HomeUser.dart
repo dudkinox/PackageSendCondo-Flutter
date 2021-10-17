@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:login_signup/components/InfiniteScroll.dart';
 import 'package:login_signup/components/Profile.dart';
+import 'package:login_signup/components/Wipper.dart';
 import 'package:login_signup/ui/Detail/art_detail.dart';
 import 'package:login_signup/ui/Detail/models/art.dart';
 import 'package:login_signup/ui/Detail/models/artist.dart';
@@ -40,45 +41,48 @@ class _HomeUserState extends State<HomeUser> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text('แจ้งเตือนจากนิติบุคคล'),
-          backgroundColor: Color(0xFFFEA4B0),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.arrow_downward),
-              onPressed: () {
-                _infiniteController.animateTo(
-                    _infiniteController.offset + 2000.0,
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeIn);
-              },
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: const Text('แจ้งเตือนจากนิติบุคคล'),
+            backgroundColor: Color(0xFFFEA4B0),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.arrow_downward),
+                onPressed: () {
+                  _infiniteController.animateTo(
+                      _infiniteController.offset + 2000.0,
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeIn);
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_upward),
+                onPressed: () {
+                  _infiniteController.animateTo(
+                      _infiniteController.offset - 2000.0,
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeIn);
+                },
+              ),
+            ],
+            bottom: const TabBar(
+              tabs: <Widget>[
+                Tab(text: 'รายการ'),
+                Tab(text: 'แก้ไขข้อมูลส่วนตัว'),
+              ],
             ),
-            IconButton(
-              icon: const Icon(Icons.arrow_upward),
-              onPressed: () {
-                _infiniteController.animateTo(
-                    _infiniteController.offset - 2000.0,
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeIn);
-              },
-            ),
-          ],
-          bottom: const TabBar(
-            tabs: <Widget>[
-              Tab(text: 'รายการ'),
-              Tab(text: 'แก้ไขข้อมูลส่วนตัว'),
+          ),
+          body: TabBarView(
+            children: <Widget>[
+              _buildTab(0),
+              ProfilePage(),
             ],
           ),
-        ),
-        body: TabBarView(
-          children: <Widget>[
-            _buildTab(0),
-            ProfilePage(),
-          ],
         ),
       ),
     );
