@@ -278,10 +278,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             builder: (_) => AlertMessage(
                                 "แจ้งเตือน", "รหัสผ่านไม่ตรงกัน", null));
                       } else {
-                        showDialog(
-                            context: context,
-                            builder: (_) => AlertMessage(
-                                "แจ้งเตือน", "สมัครบัญชีสำเร็จ", SignInPage()));
                         final String status = await Register(
                           name.text,
                           lastname.text,
@@ -291,6 +287,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           password.text,
                         );
                         print(status);
+                        if (status == "เพิ่มบัญชีสำเร็จ") {
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertMessage("แจ้งเตือน",
+                                  "สมัครบัญชีสำเร็จ", SignInPage()));
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertMessage(
+                                  "แจ้งเตือน",
+                                  "เซิร์ฟเวอร์ขัดข้อง กรุณาติดต่อที่นิติบุคคล",
+                                  null));
+                        }
                       }
                     }
                   }
