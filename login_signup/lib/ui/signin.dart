@@ -237,20 +237,16 @@ class _SignInScreenState extends State<SignInScreen> {
               Scaffold.of(context)
                   .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
               Timer _timer = new Timer(const Duration(milliseconds: 1000), () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeAdmin()),
-                );
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => HomeAdmin()));
               });
               break;
             case "user":
               Scaffold.of(context)
                   .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
               Timer _timer = new Timer(const Duration(milliseconds: 1000), () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeUser()),
-                );
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => HomeUser()));
               });
               break;
           }
