@@ -1,2 +1,19 @@
 citizen.ptkcx2021@gmail.com
 Qwertyui-12345678
+
+Host000
+citizencondo@gmail.com
+Qwertyui-12345678
+2blwcTyWQ6tUZ(FMb5lw
+
+Filezilla
+Host Name:files.000webhost.com
+Port:21
+Username:citizen-image
+Password:Qwertyui-12345678
+
+Database
+DB Name : id17783222_citizen	
+DB User	: id17783222_image
+DB Host	: localhost 
+DB Password : Qwertyui-12345678

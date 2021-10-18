@@ -200,62 +200,6 @@ class NotiPage extends StatelessWidget {
     );
   }
 
-  // return Container(
-  //   margin: EdgeInsets.all(20),
-  //   child: Column(
-  //     children: [
-  //       Row(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           Text(
-  //             'เพิ่มรูป',
-  //             style: DefaultTextStyle.of(context)
-  //                 .style
-  //                 .apply(fontSizeFactor: 2.0),
-  //           ),
-  //         ],
-  //       ),
-  //       SizedBox(height: 20),
-  //       Row(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           Text(
-  //             'ชื่อผู้รับ',
-  //             style: DefaultTextStyle.of(context)
-  //                 .style
-  //                 .apply(fontSizeFactor: 2.0),
-  //           ),
-  //         ],
-  //       ),
-  //       SizedBox(height: 20),
-  //       Row(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           Text(
-  //             'หมายเลขห้อง',
-  //             style: DefaultTextStyle.of(context)
-  //                 .style
-  //                 .apply(fontSizeFactor: 2.0),
-  //           ),
-  //         ],
-  //       ),
-  //       SizedBox(height: 20),
-  //       Row(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           Text(
-  //             'รายละเอียด',
-  //             style: DefaultTextStyle.of(context)
-  //                 .style
-  //                 .apply(fontSizeFactor: 2.0),
-  //           ),
-  //         ],
-  //       ),
-  //     ],
-  //   ),
-  // );
-
   Widget nameTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
@@ -273,10 +217,25 @@ class NotiPage extends StatelessWidget {
   }
 
   Widget detailTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      icon: Icons.person,
-      hint: "รายละเอียด",
+    return TextFormField(
+      keyboardType: TextInputType.multiline,
+      maxLines: 8,
+      maxLength: 1000,
+      decoration: new InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(50.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 5.0),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black26, width: 5.0),
+          ),
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          contentPadding:
+              EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+          hintText: "รายละเอียด"),
     );
   }
 
@@ -292,7 +251,7 @@ class NotiPage extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         //        height: _height / 20,
-        width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
+        width: _large ? _width / 2 : (_medium ? _width / 5 : _width / 3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
           gradient: LinearGradient(
@@ -300,9 +259,15 @@ class NotiPage extends StatelessWidget {
           ),
         ),
         padding: const EdgeInsets.all(12.0),
-        child: Text(
-          'ยืนยันรายการ',
-          style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10)),
+
+        // alignment: Alignment.center,
+        // child: Container(
+        child: Center(
+          child: Text(
+            'ยืนยันรายการ',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14),
+          ),
         ),
       ),
     );
