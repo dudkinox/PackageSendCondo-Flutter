@@ -10,6 +10,8 @@ import 'package:login_signup/ui/widgets/responsive_ui.dart';
 import 'package:login_signup/ui/widgets/textformfield.dart';
 
 class SignUpScreen extends StatefulWidget {
+  SignUpScreen(this.token);
+  var token;
   TextEditingController name = new TextEditingController();
   TextEditingController lastname = new TextEditingController();
   TextEditingController roomnumber = new TextEditingController();
@@ -18,10 +20,12 @@ class SignUpScreen extends StatefulWidget {
   TextEditingController password = new TextEditingController();
   TextEditingController checkpassword = new TextEditingController();
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState(token);
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  _SignUpScreenState(this.token);
+  var token;
   bool checkBoxValue = false;
   double _height;
   double _width;
@@ -291,7 +295,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           showDialog(
                               context: context,
                               builder: (_) => AlertMessage("แจ้งเตือน",
-                                  "สมัครบัญชีสำเร็จ", SignInPage()));
+                                  "สมัครบัญชีสำเร็จ", SignInPage(token)));
                         } else {
                           showDialog(
                               context: context,
