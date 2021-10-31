@@ -17,20 +17,26 @@ import 'package:login_signup/ui/widgets/textformfield.dart';
 import 'package:http/http.dart' as http;
 
 class SignInPage extends StatelessWidget {
+  SignInPage(this.token);
+  var token;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SignInScreen(),
+      body: SignInScreen(token),
     );
   }
 }
 
 class SignInScreen extends StatefulWidget {
+  SignInScreen(this.token);
+  var token;
   @override
-  _SignInScreenState createState() => _SignInScreenState();
+  _SignInScreenState createState() => _SignInScreenState(token);
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  _SignInScreenState(this.token);
+  var token;
   double _height;
   double _width;
   double _pixelRatio;
@@ -229,10 +235,10 @@ class _SignInScreenState extends State<SignInScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
-        dynamic login = await getLoginData(emailController, passwordController);
-        if (login != "false") {
-          print(login);
-          switch (login) {
+        LoginModel login = await getLoginData(emailController, passwordController);
+        if (login.TYPE != "") {
+          print(login.TYPE);
+          switch (login.TYPE) {
             case "admin":
               Scaffold.of(context)
                   .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
@@ -246,7 +252,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
               Timer _timer = new Timer(const Duration(milliseconds: 1000), () {
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => HomeUser()));
+                    MaterialPageRoute(builder: (context) => HomeUser(login.ID)));
               });
               break;
           }

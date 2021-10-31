@@ -10,13 +10,16 @@ import 'package:login_signup/ui/Detail/models/art.dart';
 import 'package:login_signup/ui/Detail/models/artist.dart';
 
 class HomeUser extends StatefulWidget {
-  const HomeUser({Key key}) : super(key: key);
-
+  // const HomeUser({Key key}) : super(key: key);
+  HomeUser(this.token);
+  var token;
   @override
-  _HomeUserState createState() => _HomeUserState();
+  _HomeUserState createState() => _HomeUserState(token);
 }
 
 class _HomeUserState extends State<HomeUser> {
+  _HomeUserState(this.token);
+  var token;
   final InfiniteScrollController _infiniteController = InfiniteScrollController(
     initialScrollOffset: 0.0,
   );
@@ -80,7 +83,7 @@ class _HomeUserState extends State<HomeUser> {
           body: TabBarView(
             children: <Widget>[
               _buildTab(0),
-              ProfilePage(),
+              ProfilePage(token),
             ],
           ),
         ),

@@ -8,13 +8,15 @@ import 'models/art.dart';
 
 class ArtDetail extends StatefulWidget {
   Art art;
-  ArtDetail({this.art});
-
+  ArtDetail({this.art , this.token});
+  var token;
   @override
-  _ArtDetailState createState() => _ArtDetailState();
+  _ArtDetailState createState() => _ArtDetailState(token);
 }
 
 class _ArtDetailState extends State<ArtDetail> {
+  _ArtDetailState(this.token);
+  var token;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +41,7 @@ class _ArtDetailState extends State<ArtDetail> {
                       onPressed: () => {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => HomeUser()),
+                          MaterialPageRoute(builder: (context) => HomeUser(token)),
                         ),
                       },
                     ),

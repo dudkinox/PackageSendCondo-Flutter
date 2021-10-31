@@ -8,6 +8,7 @@ import 'package:login_signup/ui/splashscreen.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -20,8 +21,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primaryColor: Colors.orange[200]),
       routes: <String, WidgetBuilder>{
         SPLASH_SCREEN: (BuildContext context) => SplashScreen(),
-        SIGN_IN: (BuildContext context) => SignInPage(),
-        SIGN_UP: (BuildContext context) => SignUpScreen(),
+        SIGN_IN: (BuildContext context) => SignInPage(null),
+        SIGN_UP: (BuildContext context) => SignUpScreen(null),
       },
       initialRoute: SPLASH_SCREEN,
     );
