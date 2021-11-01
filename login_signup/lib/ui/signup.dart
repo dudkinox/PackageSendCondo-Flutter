@@ -62,14 +62,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Opacity(opacity: 0.88, child: CustomAppBar()),
                 clipShape(),
                 form(),
-
                 SizedBox(
                   height: _height / 35,
                 ),
                 button(),
-                // infoTextRow(),
-                // socialIconsRow(),
-                // signInTextRow(),
               ],
             ),
           ),

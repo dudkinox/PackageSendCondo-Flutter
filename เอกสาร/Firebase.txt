@@ -17,3 +17,4 @@ DB Name : id17783222_citizen
 DB User	: id17783222_image
 DB Host	: localhost 
 DB Password : Qwertyui-12345678
+

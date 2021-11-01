@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:login_signup/Model/LoginModel.dart';
@@ -435,7 +437,6 @@ class MapScreenState extends State<ProfilePage>
                             context: context,
                             builder: (_) => AlertMessage("แจ้งเตือน",
                                 "แก้ไขข้อมูลสำเร็จ", HomeUser(token)));
-                        //  HomeUser(token)
                       } else {
                         showDialog(
                             context: context,
@@ -475,12 +476,6 @@ class MapScreenState extends State<ProfilePage>
                       FocusScope.of(context).requestFocus(new FocusNode());
                     });
                   }
-                  // else {
-                  //   var status = await Register(name.text, lastname.text,
-                  //       room.text, email.text, phone.text, password.text);
-                  //   if (status != "หาไม่เจอ") {
-                  //   } else {}
-                  // }
                 },
                 shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0)),

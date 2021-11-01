@@ -7,10 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-/// Infinite ListView
-///
-/// ListView that builds its children with to an infinite extent.
-///
 class InfiniteListView extends StatefulWidget {
   /// See [ListView.builder]
   const InfiniteListView.builder({
