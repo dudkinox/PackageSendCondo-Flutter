@@ -131,3 +131,15 @@ Future<String> UpdateProfile(
     print(e);
   }
 }
+
+Future<List<AccountModel>> DataUser() async {
+  final String url = Host + "/api/login";
+  final response = await http.get(
+    Uri.parse(url),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+  );
+  List jsonResponse = json.decode(response?.body);
+  return jsonResponse.map((data) => new AccountModel.fromJson(data)).toList();
+}

@@ -31,6 +31,7 @@ String accountModelToJson(AccountModel data) => json.encode(data.toJson());
 
 class AccountModel {
   AccountModel({
+    this.id,
     this.email,
     this.lastname,
     this.name,
@@ -41,6 +42,7 @@ class AccountModel {
     this.status,
   });
 
+  String id;
   String email;
   String lastname;
   String name;
@@ -51,6 +53,7 @@ class AccountModel {
   bool status;
 
   factory AccountModel.fromJson(Map<String, dynamic> json) => AccountModel(
+        id: json["id"],
         email: json["email"],
         lastname: json["lastname"],
         name: json["name"],
@@ -62,6 +65,7 @@ class AccountModel {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "email": email,
         "lastname": lastname,
         "name": name,

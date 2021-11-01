@@ -9,39 +9,33 @@ import 'package:login_signup/components/HomeAdmin.dart';
 import 'package:login_signup/components/HomeUser.dart';
 import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/constants/constants.dart';
-import 'package:login_signup/ui/ForgotPassword/sendEmail.dart';
-import 'package:login_signup/ui/signup.dart';
+import 'package:login_signup/main.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/responsive_ui.dart';
 
-class SignInPage extends StatelessWidget {
-  SignInPage(this.token);
-  var token;
+import 'ForgotController.dart';
+
+class SendEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SignInScreen(token),
+      body: SendEmailScreen(),
     );
   }
 }
 
-class SignInScreen extends StatefulWidget {
-  SignInScreen(this.token);
-  var token;
+class SendEmailScreen extends StatefulWidget {
   @override
-  _SignInScreenState createState() => _SignInScreenState(token);
+  _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  _SignInScreenState(this.token);
-  var token;
+class _SignInScreenState extends State<SendEmailScreen> {
   double _height;
   double _width;
   double _pixelRatio;
   bool _large;
   bool _medium;
   String emailController = "";
-  String passwordController = "";
   GlobalKey<FormState> _key = GlobalKey();
 
   @override
@@ -61,7 +55,6 @@ class _SignInScreenState extends State<SignInScreen> {
             children: <Widget>[
               clipShape(),
               welcomeTextRow(),
-              signInTextRow(),
               form(),
               forgetPassTextRow(),
               SizedBox(height: _height / 12),
@@ -75,7 +68,6 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Widget clipShape() {
-    //double height = MediaQuery.of(context).size.height;
     return Stack(
       children: <Widget>[
         Opacity(
@@ -132,27 +124,10 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Row(
         children: <Widget>[
           Text(
-            "ยินดีต้อนรับ",
+            "ส่งรหัสผ่านให้คุณไปยัง Email",
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: _large ? 60 : (_medium ? 50 : 40),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget signInTextRow() {
-    return Container(
-      margin: EdgeInsets.only(left: _width / 15.0),
-      child: Row(
-        children: <Widget>[
-          Text(
-            "ลงชื่อเข้าใช้บัญชีของคุณ",
-            style: TextStyle(
-              fontWeight: FontWeight.w200,
-              fontSize: _large ? 20 : (_medium ? 17.5 : 15),
+              fontSize: 20,
             ),
           ),
         ],
@@ -170,7 +145,6 @@ class _SignInScreenState extends State<SignInScreen> {
           children: <Widget>[
             emailTextFormField(),
             SizedBox(height: _height / 40.0),
-            passwordTextFormField(),
           ],
         ),
       ),
@@ -182,18 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
       keyboardType: TextInputType.emailAddress,
       onChanged: (String value) => {emailController = value.trim()},
       decoration: InputDecoration(
-        labelText: 'USERNAME',
-      ),
-    );
-  }
-
-  Widget passwordTextFormField() {
-    return TextField(
-      keyboardType: TextInputType.visiblePassword,
-      obscureText: true,
-      onChanged: (String value) => {passwordController = value.trim()},
-      decoration: InputDecoration(
-        labelText: 'PASSWORD',
+        labelText: 'EMAIL',
       ),
     );
   }
@@ -205,7 +168,7 @@ class _SignInScreenState extends State<SignInScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "ลืมรหัสผ่าน?",
+            "ลองเข้าสู่ระบบอีกครั้ง",
             style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: _large ? 14 : (_medium ? 12 : 10)),
@@ -216,10 +179,10 @@ class _SignInScreenState extends State<SignInScreen> {
           GestureDetector(
             onTap: () => {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => SendEmail()))
+                  context, MaterialPageRoute(builder: (context) => MyApp()))
             },
             child: Text(
-              "ขอรหัสผ่าน",
+              "ที่นี่",
               style: TextStyle(
                   fontWeight: FontWeight.w600, color: Colors.orange[200]),
             ),
@@ -234,46 +197,20 @@ class _SignInScreenState extends State<SignInScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
-        LoginModel login =
-            await getLoginData(emailController, passwordController);
-        if (login.TYPE != "") {
-          if (login.STATUS != false) {
-            switch (login.TYPE) {
-              case "admin":
-                Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
-                Timer _timer =
-                    new Timer(const Duration(milliseconds: 1000), () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeAdmin()));
-                });
-                break;
-              case "user":
-                Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
-                Timer _timer =
-                    new Timer(const Duration(milliseconds: 1000), () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => HomeUser(login.ID)));
-                });
-                break;
-            }
-          } else {
-            showDialog(
-                context: context,
-                builder: (_) => AlertMessage("แจ้งเตือน",
-                    "ยังไม่ได้รับการอนุมัติตรวจสอบการสมัคร", null));
-          }
+        if (emailController != "") {
+          SendEmailForGot(context, emailController);
         } else {
-          Scaffold.of(context)
-              .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบผิดพลาด!')));
+          showDialog(
+            context: context,
+            builder: (_) => AlertMessage("แจ้งเตือน", "กรุงณากรอกอีเมล", null),
+          );
         }
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: Container(
         alignment: Alignment.center,
-        width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
+        width: 300,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
           gradient: LinearGradient(
@@ -281,7 +218,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         padding: const EdgeInsets.all(12.0),
-        child: Text('เข้าสู่ระบบ',
+        child: Text('ส่งเลขยืนยันไปยัง email',
             style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10))),
       ),
     );
@@ -303,9 +240,9 @@ class _SignInScreenState extends State<SignInScreen> {
             width: 5,
           ),
           GestureDetector(
-            onTap: () => {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SignUpScreen(null)))
+            onTap: () {
+              Navigator.of(context).pushNamed(SIGN_UP);
+              print("Routing to Sign up screen");
             },
             child: Text(
               "สมัครสมาชิก",
