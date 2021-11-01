@@ -38,8 +38,8 @@ class _HomeAdminState extends State<HomeAdmin> {
             leading: IconButton(
               icon: Icon(Icons.logout),
               onPressed: () => {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MyApp()))
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => MyApp()))
               },
             ),
           ),
