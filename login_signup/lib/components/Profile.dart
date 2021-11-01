@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:login_signup/Model/LoginModel.dart';
+import 'package:login_signup/Service/loginService.dart';
 import 'package:login_signup/components/HomeUser.dart';
 import 'package:login_signup/components/alert.dart';
-import 'package:login_signup/controller/loginController.dart';
 import 'package:login_signup/ui/signin.dart';
 
 import 'Wipper.dart';

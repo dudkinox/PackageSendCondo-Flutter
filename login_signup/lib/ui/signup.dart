@@ -1,8 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_signup/Service/loginService.dart';
 import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/constants/constants.dart';
-import 'package:login_signup/controller/loginController.dart';
 import 'package:login_signup/ui/signin.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/customappbar.dart';

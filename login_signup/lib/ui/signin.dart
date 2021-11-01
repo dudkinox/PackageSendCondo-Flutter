@@ -1,20 +1,16 @@
-// ignore_for_file: deprecated_member_use, unused_local_variable
+// ignore_for_file: deprecated_member_use, unused_local_variable, must_be_immutable
 
 import 'dart:async';
-import 'dart:convert' show Utf8Decoder, json, utf8;
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:login_signup/Database/Host.dart';
 import 'package:login_signup/Model/LoginModel.dart';
+import 'package:login_signup/Service/loginService.dart';
 import 'package:login_signup/components/HomeAdmin.dart';
 import 'package:login_signup/components/HomeUser.dart';
+import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/constants/constants.dart';
-import 'package:login_signup/controller/loginController.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/responsive_ui.dart';
-import 'package:login_signup/ui/widgets/textformfield.dart';
-import 'package:http/http.dart' as http;
 
 class SignInPage extends StatelessWidget {
   SignInPage(this.token);
@@ -235,26 +231,35 @@ class _SignInScreenState extends State<SignInScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
-        LoginModel login = await getLoginData(emailController, passwordController);
+        LoginModel login =
+            await getLoginData(emailController, passwordController);
         if (login.TYPE != "") {
-          print(login.TYPE);
-          switch (login.TYPE) {
-            case "admin":
-              Scaffold.of(context)
-                  .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
-              Timer _timer = new Timer(const Duration(milliseconds: 1000), () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => HomeAdmin()));
-              });
-              break;
-            case "user":
-              Scaffold.of(context)
-                  .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
-              Timer _timer = new Timer(const Duration(milliseconds: 1000), () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => HomeUser(login.ID)));
-              });
-              break;
+          if (login.STATUS != false) {
+            switch (login.TYPE) {
+              case "admin":
+                Scaffold.of(context)
+                    .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
+                Timer _timer =
+                    new Timer(const Duration(milliseconds: 1000), () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HomeAdmin()));
+                });
+                break;
+              case "user":
+                Scaffold.of(context)
+                    .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
+                Timer _timer =
+                    new Timer(const Duration(milliseconds: 1000), () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => HomeUser(login.ID)));
+                });
+                break;
+            }
+          } else {
+            showDialog(
+                context: context,
+                builder: (_) => AlertMessage("แจ้งเตือน",
+                    "ยังไม่ได้รับการอนุมัติตรวจสอบการสมัคร", null));
           }
         } else {
           Scaffold.of(context)
