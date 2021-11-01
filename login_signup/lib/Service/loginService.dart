@@ -31,14 +31,15 @@ Future<String> Register(
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
+      body: jsonEncode(<String, dynamic>{
         "type": "user",
         "name": name,
         "lastname": lastname,
         "room": room,
         "email": email,
         "phone": phone,
-        "password": password
+        "password": password,
+        "status": false
       }),
     );
 
