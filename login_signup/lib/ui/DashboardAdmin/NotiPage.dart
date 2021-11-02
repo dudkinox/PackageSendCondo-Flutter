@@ -1,16 +1,43 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:login_signup/Model/UploadImgModel.dart';
+import 'package:login_signup/Service/uploadAdminService.dart';
+import 'package:login_signup/components/alert.dart';
+import 'package:login_signup/components/loading.dart';
+import 'package:login_signup/ui/DashboardAdmin/ManageRegister.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/customappbar.dart';
 import 'package:login_signup/ui/widgets/responsive_ui.dart';
 import 'package:login_signup/ui/widgets/textformfield.dart';
 
-class NotiPage extends StatelessWidget {
+class NotiPage extends StatefulWidget {
+  NotiPage(this.token);
+  var token;
   bool checkBoxValue = false;
   double _height;
   double _width;
   double _pixelRatio;
   bool _large;
   bool _medium;
+  @override
+  _NotiPageState createState() => _NotiPageState(token);
+}
+
+class _NotiPageState extends State<NotiPage> {
+  _NotiPageState(this.token);
+  var token;
+  bool checkBoxValue = false;
+  double _height;
+  double _width;
+  double _pixelRatio;
+  bool _large;
+  bool _medium;
+  File file;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +110,28 @@ class NotiPage extends StatelessWidget {
             ),
           ),
         ),
-
+        // FutureBuilder<ResumeModel>(
+        //   future: PreviewResume(token),
+        //   builder: (context, snapshot) {
+        //     if (snapshot.connectionState == ConnectionState.done) {
+        //       if (snapshot.data?.link == "") {
+        //         return Text(
+        //           "ยังไม่ได้เลือกรูปภาพ",
+        //           textAlign: TextAlign.center,
+        //         );
+        //       } else {
+        //         return Container(
+        //           child: Image.network(
+        //             snapshot.data?.link,
+        //             fit: BoxFit.fill,
+        //           ),
+        //         );
+        //       }
+        //     } else {
+        //       return LoadingRipple();
+        //     }
+        //   },
+        // ),
         Container(
           height: _height / 5.5,
           alignment: Alignment.center,
@@ -99,8 +147,29 @@ class NotiPage extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: GestureDetector(
-              onTap: () {
-                print('Adding photo');
+              onTap: () async {
+                var image =
+                    await ImagePicker().getImage(source: ImageSource.gallery);
+                if (image?.path != null) {
+                  String status = await UploadItem(token, File(image.path));
+                  print(status);
+                  if (status == "อัพโหลดรูปภาพเรียบร้อย") {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertMessage(
+                          "แจ้งเตือน", "อัพเดตรูปภาพแล้ว", Manager()),
+                    );
+                    setState(() {
+                      file = File(image.path);
+                    });
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertMessage("แจ้งเตือน",
+                          "การอัพโหลดมีปัญหา โปรดลองใหม่ภายหลัง", null),
+                    );
+                  }
+                }
               },
               child: Icon(
                 Icons.add_a_photo,

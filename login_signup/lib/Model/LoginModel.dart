@@ -64,6 +64,7 @@ class AccountModel {
         status: json["status"],
       );
 
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "email": email,
@@ -76,3 +77,5 @@ class AccountModel {
         "status": status,
       };
 }
+
+

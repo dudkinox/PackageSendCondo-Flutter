@@ -69,6 +69,37 @@ Future<AccountModel> FindID(String token) async {
   }
 }
 
+Future<String> DeleteID(String token) async {
+  try {
+    final String url = Host + "/api/login/" + token;
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    return "ลบสำเร็จ";
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future<List<AccountModel>> FilterID() async {
+  try {
+    final String url = Host + "/api/login/";
+    final response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    List jsonResponse = json.decode(response?.body);
+  return jsonResponse.map((data) => new AccountModel.fromJson(data)).toList();
+  } catch (e) {
+    print(e);
+  }
+}
+
 Future<String> UpdateProfilePassword(
   String name,
   String email,
@@ -128,6 +159,26 @@ Future<String> UpdateProfile(
     }
     var data = json.decode(json.encode(response.body));
     return data;
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future<String> AcceptUser(
+  String token,
+) async {
+  try {
+    final String Url = Host + "/api/login/" + token;
+    final response = await http.put(
+      Uri.parse(Url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "status": true
+      }),
+    );
+    return "ยอมรับสำเร็จ";
   } catch (e) {
     print(e);
   }

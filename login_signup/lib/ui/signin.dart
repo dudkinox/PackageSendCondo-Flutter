@@ -234,39 +234,48 @@ class _SignInScreenState extends State<SignInScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
-        LoginModel login =
-            await getLoginData(emailController, passwordController);
-        if (login.TYPE != "") {
-          if (login.STATUS != false) {
-            switch (login.TYPE) {
-              case "admin":
-                Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
-                Timer _timer =
-                    new Timer(const Duration(milliseconds: 1000), () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeAdmin()));
-                });
-                break;
-              case "user":
-                Scaffold.of(context)
-                    .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
-                Timer _timer =
-                    new Timer(const Duration(milliseconds: 1000), () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => HomeUser(login.ID)));
-                });
-                break;
+        if(emailController != "" || passwordController != ""){
+          LoginModel login =
+              await getLoginData(emailController, passwordController);
+          if (login.TYPE != "") {
+            if (login.STATUS != false) {
+              switch (login.TYPE) {
+                case "admin":
+                  Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
+                  Timer _timer =
+                      new Timer(const Duration(milliseconds: 1000), () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => HomeAdmin(login.ID)));
+                  });
+                  break;
+                case "user":
+                  Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
+                  Timer _timer =
+                      new Timer(const Duration(milliseconds: 1000), () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => HomeUser(login.ID)));
+                  });
+                  break;
+              }
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (_) => AlertMessage("แจ้งเตือน",
+                      "ยังไม่ได้รับการอนุมัติตรวจสอบการสมัคร", null));
             }
           } else {
-            showDialog(
+            Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบผิดพลาด!')));
+          }
+
+        } else {
+           showDialog(
                 context: context,
                 builder: (_) => AlertMessage("แจ้งเตือน",
-                    "ยังไม่ได้รับการอนุมัติตรวจสอบการสมัคร", null));
-          }
-        } else {
-          Scaffold.of(context)
-              .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบผิดพลาด!')));
+                    "เข้าสู่ระบบผิดพลาด!", null));
+                    
         }
       },
       textColor: Colors.white,

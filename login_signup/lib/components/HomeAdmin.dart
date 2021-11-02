@@ -7,13 +7,15 @@ import 'package:login_signup/ui/DashboardAdmin/NotiPage.dart';
 import '../main.dart';
 
 class HomeAdmin extends StatefulWidget {
-  const HomeAdmin({Key key}) : super(key: key);
-
+  HomeAdmin(this.token);
+  var token;
   @override
-  _HomeAdminState createState() => _HomeAdminState();
+  _HomeAdminState createState() => _HomeAdminState(token);
 }
 
 class _HomeAdminState extends State<HomeAdmin> {
+  _HomeAdminState(this.token);
+  var token;
   final InfiniteScrollController _infiniteController = InfiniteScrollController(
     initialScrollOffset: 0.0,
   );
@@ -46,7 +48,7 @@ class _HomeAdminState extends State<HomeAdmin> {
           body: TabBarView(
             children: <Widget>[
               Manager(),
-              NotiPage(),
+              NotiPage(token),
             ],
           ),
         ),

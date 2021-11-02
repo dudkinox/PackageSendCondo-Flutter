@@ -10,6 +10,7 @@ import 'package:login_signup/components/HomeUser.dart';
 import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/constants/constants.dart';
 import 'package:login_signup/main.dart';
+import 'package:login_signup/ui/signup.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/responsive_ui.dart';
 
@@ -241,8 +242,8 @@ class _SignInScreenState extends State<SendEmailScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(SIGN_UP);
-              print("Routing to Sign up screen");
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SignUpScreen(null)));
             },
             child: Text(
               "สมัครสมาชิก",

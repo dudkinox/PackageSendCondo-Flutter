@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup/Service/loginService.dart';
 import 'package:login_signup/components/alert.dart';
+import 'package:login_signup/components/loading.dart';
 import 'package:login_signup/constants/constants.dart';
 import 'package:login_signup/ui/signin.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
@@ -34,6 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+  bool loading = false;
   TextEditingController name = new TextEditingController();
   TextEditingController lastname = new TextEditingController();
   TextEditingController roomnumber = new TextEditingController();
@@ -43,6 +45,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController checkpassword = new TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
@@ -50,7 +57,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
-    return Material(
+    return loading 
+    ? LoadingCube() :
+    Material(
       child: Scaffold(
         body: Container(
           height: _height,
@@ -280,6 +289,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             builder: (_) => AlertMessage(
                                 "แจ้งเตือน", "รหัสผ่านไม่ตรงกัน", null));
                       } else {
+                        setState(() => loading = true);
                         final String status = await Register(
                           name.text,
                           lastname.text,
@@ -294,6 +304,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               context: context,
                               builder: (_) => AlertMessage("แจ้งเตือน",
                                   "สมัครบัญชีสำเร็จ", SignInPage(token)));
+                                  setState(() => loading = false);
                         } else {
                           showDialog(
                               context: context,

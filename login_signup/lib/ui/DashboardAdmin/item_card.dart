@@ -1,14 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:login_signup/Service/loginService.dart';
+import 'package:login_signup/components/HomeAdmin.dart';
+import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/models/register.dart';
 
 class Itemcard extends StatelessWidget {
-  final user person;
-  final Function press;
-  const Itemcard({
-    Key key,
-    this.person,
-    this.press,
-  }) : super(key: key);
+  final String name;
+  final String room;
+  final String id;
+
+  const Itemcard(this.name, this.room, this.id);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,8 @@ class Itemcard extends StatelessWidget {
               children: [
                 body(context),
                 SizedBox(height: 6),
-                footer(),
+                footer(context),
+                SizedBox(height: 6),
               ],
             ),
           ),
@@ -37,21 +41,58 @@ class Itemcard extends StatelessWidget {
     );
   }
 
-  Widget footer() {
+  Widget footer(context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        button(
-          buttonName: "ยืนยันการร้องขอ",
-          color: Colors.green[700],
-          onpress: {},
-        ),
+        TextButton(
+            onPressed: () async {
+              var status = await AcceptUser(id);
+              if (status == "ยอมรับสำเร็จ") {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertMessage(
+                      "แจ้งเตือน", "ยืนยันการร้องสำเร็จ", HomeAdmin(null)),
+                );
+              } else {
+                showDialog(
+                    context: context,
+                    builder: (_) =>
+                        AlertMessage("แจ้งเตือน", "ไม่สามารถยืนยันได้", null));
+              }
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.green[700]),
+            ),
+            child: const Text(
+              'ยืนยันการร้องขอ',
+              style: TextStyle(color: Colors.white),
+            )),
         Spacer(),
-        button(
-          buttonName: "ปฏิเศษการร้องขอ",
-          color: Colors.redAccent[400],
-          onpress: {},
+        TextButton(
+          onPressed: () async {
+            var status = await DeleteID(id);
+            if (status == "ลบสำเร็จ") {
+              showDialog(
+                context: context,
+                builder: (_) => AlertMessage(
+                    "แจ้งเตือน", "ปฏิเศษการร้องขอสำเร็จ", HomeAdmin(null)),
+              );
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (_) =>
+                      AlertMessage("แจ้งเตือน", "ไม่สามารถลบได้", null));
+            }
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.redAccent[400]),
+          ),
+          child: const Text(
+            'ปฏิเศษการร้องขอ',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     );
@@ -76,14 +117,10 @@ class Itemcard extends StatelessWidget {
         children: [
           labelText(
             label: "หมายเลขห้อง",
-            value: person.numberroom.toString(),
+            value: room.toString(),
           ),
           SizedBox(
             width: 80,
-          ),
-          labelText(
-            label: "วันที่ยื่นคำร้อง",
-            value: person.date,
           ),
         ],
       ),
@@ -112,23 +149,10 @@ class Itemcard extends StatelessWidget {
         ),
         SizedBox(width: 8),
         Text(
-          person.name,
+          name,
           style: TextStyle(fontSize: 18),
         )
       ],
-    );
-  }
-
-  Widget button({String buttonName, Color color, void onpress}) {
-    return TextButton(
-      onPressed: () => onpress,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(color),
-      ),
-      child: Text(
-        buttonName,
-        style: TextStyle(color: Colors.white),
-      ),
     );
   }
 }
