@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login_signup/Model/UploadImgModel.dart';
 import 'package:login_signup/Service/uploadAdminService.dart';
+import 'package:login_signup/components/HomeAdmin.dart';
 import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/components/loading.dart';
 import 'package:login_signup/ui/DashboardAdmin/ManageRegister.dart';
@@ -12,6 +13,10 @@ import 'package:login_signup/ui/widgets/responsive_ui.dart';
 import 'package:login_signup/ui/widgets/textformfield.dart';
 
 class NotiPage extends StatefulWidget {
+  final TextEditingController name = new TextEditingController();
+  final TextEditingController room = new TextEditingController();
+  final TextEditingController detail = new TextEditingController();
+
   NotiPage(this.token);
   var token;
   bool checkBoxValue = false;
@@ -34,6 +39,11 @@ class _NotiPageState extends State<NotiPage> {
   bool _large;
   bool _medium;
   File file;
+  bool loading = false;
+  TextEditingController name = new TextEditingController();
+  TextEditingController room = new TextEditingController();
+  TextEditingController detail = new TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -47,7 +57,8 @@ class _NotiPageState extends State<NotiPage> {
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
-    return Material(
+    return loading ? LoadingCube() : 
+    Material(
       child: Scaffold(
         body: Container(
           height: _height,
@@ -57,16 +68,13 @@ class _NotiPageState extends State<NotiPage> {
             child: Column(
               children: <Widget>[
                 Opacity(opacity: 0.88),
-
                 clipShape(),
                 form(context),
                 SizedBox(
                   height: _height / 35,
                 ),
                 button(),
-                // infoTextRow(),
-                // socialIconsRow(),
-                // signInTextRow(),
+                SizedBox( height: MediaQuery.of(context).size.height * 0.06)
               ],
             ),
           ),
@@ -110,91 +118,44 @@ class _NotiPageState extends State<NotiPage> {
             ),
           ),
         ),
-        // FutureBuilder<ResumeModel>(
-        //   future: PreviewResume(token),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.done) {
-        //       if (snapshot.data?.link == "") {
-        //         return Text(
-        //           "ยังไม่ได้เลือกรูปภาพ",
-        //           textAlign: TextAlign.center,
-        //         );
-        //       } else {
-        //         return Container(
-        //           child: Image.network(
-        //             snapshot.data?.link,
-        //             fit: BoxFit.fill,
-        //           ),
-        //         );
-        //       }
-        //     } else {
-        //       return LoadingRipple();
-        //     }
-        //   },
-        // ),
+        
         Container(
-          height: _height / 5.5,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  spreadRadius: 0.0,
-                  color: Colors.black26,
-                  offset: Offset(1.0, 10.0),
-                  blurRadius: 20.0),
-            ],
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
-          child: GestureDetector(
+            height: _height / 5.5,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    spreadRadius: 0.0,
+                    color: Colors.black26,
+                    offset: Offset(1.0, 10.0),
+                    blurRadius: 20.0),
+              ],
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: GestureDetector(
               onTap: () async {
                 var image =
                     await ImagePicker().getImage(source: ImageSource.gallery);
-                if (image?.path != null) {
-                  String status = await UploadItem(token, File(image.path));
-                  print(status);
-                  if (status == "อัพโหลดรูปภาพเรียบร้อย") {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertMessage(
-                          "แจ้งเตือน", "อัพเดตรูปภาพแล้ว", Manager()),
-                    );
-                    setState(() {
-                      file = File(image.path);
-                    });
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertMessage("แจ้งเตือน",
-                          "การอัพโหลดมีปัญหา โปรดลองใหม่ภายหลัง", null),
-                    );
-                  }
-                }
+                setState(() {
+                  file = File(image.path);
+                });
               },
-              child: Icon(
-                Icons.add_a_photo,
-                size: _large ? 40 : (_medium ? 33 : 31),
-                color: Colors.orange[200],
-              )),
-        ),
-//        Positioned(
-//          top: _height/8,
-//          left: _width/1.75,
-//          child: Container(
-//            alignment: Alignment.center,
-//            height: _height/23,
-//            padding: EdgeInsets.all(5),
-//            decoration: BoxDecoration(
-//              shape: BoxShape.circle,
-//              color:  Colors.orange[100],
-//            ),
-//            child: GestureDetector(
-//                onTap: (){
-//                  print('Adding photo');
-//                },
-//                child: Icon(Icons.add_a_photo, size: _large? 22: (_medium? 15: 13),)),
-//          ),
-//        ),
+              child: CircleAvatar(
+                radius: 45,
+                backgroundColor: Colors.white,
+                child: file == null
+                    ? Icon(
+                        Icons.add_a_photo,
+                        size: _large ? 40 : (_medium ? 33 : 31),
+                        color: Colors.orange[200],
+                      )
+                    : Image.file(
+                        file,
+                        fit: BoxFit.fill,
+                      ),
+              ),
+            ))
       ],
     );
   }
@@ -274,14 +235,16 @@ class _NotiPageState extends State<NotiPage> {
       keyboardType: TextInputType.text,
       icon: Icons.person,
       hint: "ชื่อ",
+      textEditingController: name,
     );
   }
 
   Widget roomTextFormField() {
     return CustomTextField(
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.number,
       icon: Icons.meeting_room_outlined,
       hint: "หมายเลขห้อง",
+      textEditingController: room,
     );
   }
 
@@ -305,6 +268,7 @@ class _NotiPageState extends State<NotiPage> {
           contentPadding:
               EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
           hintText: "รายละเอียด"),
+      controller: detail,
     );
   }
 
@@ -312,15 +276,42 @@ class _NotiPageState extends State<NotiPage> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () {
-        print("Routing to your service");
+      onPressed: () async {
+        if(name.text == "" || room.text == "" || detail.text == ""){
+          showDialog(
+              context: context,
+              builder: (_) =>
+                  AlertMessage("แจ้งเตือน", "กรุณากรอกข้อมูลให้ครบถ้วน", null));
+        } else {
+          setState(() => loading = true);
+          String status = await UploadPackage(name.text, room.text, detail.text);
+          if (status == "เพิ่มบัญชีสำเร็จ") {
+            String uploadimg = await UploadIMG(room.text , file);
+            if(uploadimg == "อัพโหลดรูปภาพเรียบร้อย"){
+              showDialog(
+                context: context,
+                builder: (_) =>
+                    AlertMessage("แจ้งเตือน", "อัพข้อมูลสำเร็จ", HomeAdmin(token)));
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) =>
+                    AlertMessage("แจ้งเตือน", "เซิฟเวอร์มีปัญหา กรุณาลองใหม่ภายหลัง", null));
+            }
+          } else {
+            showDialog(
+                context: context,
+                builder: (_) =>
+                    AlertMessage("แจ้งเตือน", "เซิฟเวอร์มีปัญหา กรุณาลองใหม่ภายหลัง", null));
+          }
+          setState(() => loading = false);
+        }
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: Container(
         alignment: Alignment.center,
-        //        height: _height / 20,
-        width: _large ? _width / 2 : (_medium ? _width / 5 : _width / 3.5),
+        width: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
           gradient: LinearGradient(
@@ -335,7 +326,7 @@ class _NotiPageState extends State<NotiPage> {
           child: Text(
             'ยืนยันรายการ',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14),
+            style: TextStyle(fontSize: 14), 
           ),
         ),
       ),

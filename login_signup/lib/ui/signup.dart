@@ -70,7 +70,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: <Widget>[
                 Opacity(opacity: 0.88, child: CustomAppBar()),
                 clipShape(),
-                form(),
                 SizedBox(
                   height: _height / 35,
                 ),
@@ -87,7 +86,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Stack(
       children: <Widget>[
         Opacity(
-          opacity: 0.75,
+          opacity: 0.78,
           child: ClipPath(
             clipper: CustomShapeClipper(),
             child: Container(
@@ -118,30 +117,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         ),
-        Container(
-          height: _height / 5.5,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  spreadRadius: 0.0,
-                  color: Colors.black26,
-                  offset: Offset(1.0, 10.0),
-                  blurRadius: 20.0),
-            ],
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
-          child: GestureDetector(
-              onTap: () {
-                print('Adding photo');
-              },
-              child: Icon(
-                Icons.add_a_photo,
-                size: _large ? 40 : (_medium ? 33 : 31),
-                color: Colors.orange[200],
-              )),
-        ),
+        form()
+        // Container(
+        //   height: _height / 5.5,
+        //   alignment: Alignment.center,
+        //   decoration: BoxDecoration(
+        //     boxShadow: [
+        //       BoxShadow(
+        //           spreadRadius: 0.0,
+        //           color: Colors.black26,
+        //           offset: Offset(1.0, 10.0),
+        //           blurRadius: 20.0),
+        //     ],
+        //     color: Colors.white,
+        //     shape: BoxShape.circle,
+        //   ),
+        //   child: GestureDetector(
+        //       onTap: () {
+        //         print('Adding photo');
+        //       },
+        //       child: Icon(
+        //         Icons.add_a_photo,
+        //         size: _large ? 40 : (_medium ? 33 : 31),
+        //         color: Colors.orange[200],
+        //       )),
+        // ),
       ],
     );
   }
