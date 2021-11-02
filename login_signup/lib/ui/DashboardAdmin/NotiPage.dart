@@ -57,30 +57,32 @@ class _NotiPageState extends State<NotiPage> {
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
-    return loading ? LoadingCube() : 
-    Material(
-      child: Scaffold(
-        body: Container(
-          height: _height,
-          width: _width,
-          margin: EdgeInsets.only(bottom: 5),
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Opacity(opacity: 0.88),
-                clipShape(),
-                form(context),
-                SizedBox(
-                  height: _height / 35,
+    return loading
+        ? LoadingCube()
+        : Material(
+            child: Scaffold(
+              body: Container(
+                height: _height,
+                width: _width,
+                margin: EdgeInsets.only(bottom: 5),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Opacity(opacity: 0.88),
+                      clipShape(),
+                      form(context),
+                      SizedBox(
+                        height: _height / 35,
+                      ),
+                      button(),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.06)
+                    ],
+                  ),
                 ),
-                button(),
-                SizedBox( height: MediaQuery.of(context).size.height * 0.06)
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 
   Widget clipShape() {
@@ -118,9 +120,9 @@ class _NotiPageState extends State<NotiPage> {
             ),
           ),
         ),
-        
         Container(
-            height: _height / 5.5,
+            height: _height / 5.50,
+            margin: EdgeInsets.all(20),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               boxShadow: [
@@ -277,32 +279,33 @@ class _NotiPageState extends State<NotiPage> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
-        if(name.text == "" || room.text == "" || detail.text == ""){
+        if (name.text == "" || room.text == "" || detail.text == "") {
           showDialog(
               context: context,
               builder: (_) =>
                   AlertMessage("แจ้งเตือน", "กรุณากรอกข้อมูลให้ครบถ้วน", null));
         } else {
           setState(() => loading = true);
-          String status = await UploadPackage(name.text, room.text, detail.text);
+          String status =
+              await UploadPackage(name.text, room.text, detail.text);
           if (status == "เพิ่มบัญชีสำเร็จ") {
-            String uploadimg = await UploadIMG(room.text , file);
-            if(uploadimg == "อัพโหลดรูปภาพเรียบร้อย"){
+            String uploadimg = await UploadIMG(room.text, file);
+            if (uploadimg == "อัพโหลดรูปภาพเรียบร้อย") {
               showDialog(
-                context: context,
-                builder: (_) =>
-                    AlertMessage("แจ้งเตือน", "อัพข้อมูลสำเร็จ", HomeAdmin(token)));
+                  context: context,
+                  builder: (_) => AlertMessage(
+                      "แจ้งเตือน", "อัพข้อมูลสำเร็จ", HomeAdmin(token)));
             } else {
               showDialog(
-                context: context,
-                builder: (_) =>
-                    AlertMessage("แจ้งเตือน", "เซิฟเวอร์มีปัญหา กรุณาลองใหม่ภายหลัง", null));
+                  context: context,
+                  builder: (_) => AlertMessage("แจ้งเตือน",
+                      "เซิฟเวอร์มีปัญหา กรุณาลองใหม่ภายหลัง", null));
             }
           } else {
             showDialog(
                 context: context,
-                builder: (_) =>
-                    AlertMessage("แจ้งเตือน", "เซิฟเวอร์มีปัญหา กรุณาลองใหม่ภายหลัง", null));
+                builder: (_) => AlertMessage(
+                    "แจ้งเตือน", "เซิฟเวอร์มีปัญหา กรุณาลองใหม่ภายหลัง", null));
           }
           setState(() => loading = false);
         }
@@ -326,7 +329,7 @@ class _NotiPageState extends State<NotiPage> {
           child: Text(
             'ยืนยันรายการ',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14), 
+            style: TextStyle(fontSize: 14),
           ),
         ),
       ),
