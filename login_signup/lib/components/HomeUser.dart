@@ -1,4 +1,4 @@
-import 'dart:convert';
+// ignore_for_file: must_be_immutable, unused_field
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -8,13 +8,11 @@ import 'package:login_signup/components/InfiniteScroll.dart';
 import 'package:login_signup/components/Profile.dart';
 import 'package:login_signup/components/Wipper.dart';
 import 'package:login_signup/components/loading.dart';
-import 'package:login_signup/ui/Detail/art_detail.dart';
-import 'package:login_signup/ui/Detail/models/art.dart';
-import 'package:login_signup/ui/Detail/models/artist.dart';
 import 'package:login_signup/ui/Detail/packagelist.dart';
 
+import 'notification.dart';
+
 class HomeUser extends StatefulWidget {
-  // const HomeUser({Key key}) : super(key: key);
   HomeUser(this.token, this.room);
   var token;
   var room;
@@ -53,8 +51,11 @@ class _HomeUserState extends State<HomeUser> {
             backgroundColor: Color(0xFFFEA4B0),
             bottom: const TabBar(
               tabs: <Widget>[
-                Tab(text: 'รายการพัสดุ',icon: Icon(Icons.archive_outlined),),
-                Tab(text: 'แก้ไขข้อมูลส่วนตัว',icon: Icon(Icons.edit)),
+                Tab(
+                  text: 'รายการพัสดุ',
+                  icon: Icon(Icons.archive_outlined),
+                ),
+                Tab(text: 'แก้ไขข้อมูลส่วนตัว', icon: Icon(Icons.edit)),
               ],
             ),
           ),
@@ -111,6 +112,7 @@ class _HomeUserState extends State<HomeUser> {
                 ),
               );
             } else {
+              showNotification(room);
               return RefreshIndicator(
                   onRefresh: onPullToRefresh,
                   child: ListView?.builder(
