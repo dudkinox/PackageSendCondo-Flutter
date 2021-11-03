@@ -19,7 +19,7 @@ class _ManagerState extends State<Manager> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(top: 10),
+        padding: EdgeInsets.all(10),
         child: FutureBuilder<List<AccountModel>>(
             future: FilterID(),
             builder: (context, AsyncSnapshot snapshot) {
@@ -33,15 +33,22 @@ class _ManagerState extends State<Manager> {
                   }
                 }
                 if (users.length == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Text(
-                      "ไม่พบข้อมูล",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 23),
-                      textAlign: TextAlign.center,
+                  return RefreshIndicator(
+                    onRefresh: onPullToRefresh,
+                    child: CustomScrollView(
+                      slivers: <Widget>[
+                        SliverFillRemaining(
+                          child: Container(
+                            child: Center(
+                              child: Text("ไม่พบข้อมูล",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 23)),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   );
                 } else {
@@ -50,7 +57,10 @@ class _ManagerState extends State<Manager> {
                       child: ListView?.builder(
                         itemCount: users.length,
                         itemBuilder: (context, index) {
-                          return users[index];
+                          return Padding(
+                            padding: EdgeInsets.all(8),
+                            child: users[index]
+                            );
                         },
                       ));
                 }

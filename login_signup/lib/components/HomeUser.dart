@@ -107,15 +107,22 @@ class _HomeUserState extends State<HomeUser> {
               }
             }
             if (datapackage.length == 0) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Text(
-                  "ไม่พบข้อมูล",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 23),
-                  textAlign: TextAlign.center,
+              return RefreshIndicator(
+                onRefresh: onPullToRefresh,
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverFillRemaining(
+                      child: Container(
+                        child: Center(
+                          child: Text("ไม่พบข้อมูล",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 23)),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               );
             } else {

@@ -94,7 +94,7 @@ class _PackageDeatilState extends State<PackageDeatil> {
                             height: 20.0,
                           ),
                           Padding(
-                            padding: EdgeInsets.all(5.0),
+                            padding: EdgeInsets.all(20.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -121,6 +121,7 @@ class _PackageDeatilState extends State<PackageDeatil> {
                                       fontSize: 20,
                                       fontWeight: FontWeight.w500),
                                 ),
+                                SizedBox(height: 10),
                                 Container(
                                   child: TextFormField(
                                     readOnly: true,

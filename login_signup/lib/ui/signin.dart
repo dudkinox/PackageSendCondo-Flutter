@@ -287,6 +287,7 @@ class _SignInScreenState extends State<SignInScreen> {
               builder: (_) =>
                   AlertMessage("แจ้งเตือน", "เข้าสู่ระบบผิดพลาด!", null));
         }
+        setState(() => loading = false);
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

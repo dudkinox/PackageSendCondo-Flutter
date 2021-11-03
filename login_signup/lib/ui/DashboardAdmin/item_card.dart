@@ -1,43 +1,85 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:login_signup/Service/loginService.dart';
 import 'package:login_signup/components/HomeAdmin.dart';
 import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/models/register.dart';
+import 'package:login_signup/ui/widgets/custom_shape.dart';
+import 'package:login_signup/ui/widgets/responsive_ui.dart';
 
 class Itemcard extends StatelessWidget {
   final String name;
   final String room;
   final String id;
+  
+  Itemcard(this.name, this.room, this.id);
 
-  const Itemcard(this.name, this.room, this.id);
-
+  double _height;
+  double _width;
+  double _pixelRatio;
+  bool _large;
+  bool _medium;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: (Colors.orange[200]),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Column(
-        children: <Widget>[
-          header(context),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.67,
-            child: Column(
-              children: [
-                body(context),
-                SizedBox(height: 6),
-                footer(context),
-                SizedBox(height: 6),
-              ],
+     _height = MediaQuery.of(context).size.height;
+    _width = MediaQuery.of(context).size.width;
+    _pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+    return Stack(
+      children: [
+        Opacity(
+          opacity: 0.75,
+          child: ClipPath(
+            clipper: CustomShapeClipper(),
+            child: Container(
+              height: _large
+                  ? _height / 8
+                  : (_medium ? _height / 7 : _height / 6.5),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.orange[200], Colors.pinkAccent],
+                ),
+              ),
             ),
           ),
-          SizedBox(height: 6),
-        ],
-      ),
+        ),
+        Opacity(
+          opacity: 0.5,
+          child: ClipPath(
+            clipper: CustomShapeClipper2(),
+            child: Container(
+              height: _large
+                  ? _height / 12
+                  : (_medium ? _height / 6 : _height / 10),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.orange[200], Colors.pinkAccent],
+                ),
+              ),
+            ),
+          ),
+        ),
+        Column(
+          children: <Widget>[
+            header(context),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.67,
+              child: Column(
+                children: [
+                  body(context),
+                  SizedBox(height: 6),
+                  footer(context),
+                  SizedBox(height: 6),
+                ],
+              ),
+            ),
+            SizedBox(height: 6),
+          ],
+        ),
+      ],
     );
   }
 
@@ -142,6 +184,7 @@ class Itemcard extends StatelessWidget {
   Widget header(BuildContext context) {
     return Row(
       children: [
+        SizedBox(width: 5),
         Image.asset(
           'assets/images/user.png',
           height: MediaQuery.of(context).size.height * 0.06,
