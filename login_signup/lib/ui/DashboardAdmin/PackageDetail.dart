@@ -91,7 +91,7 @@ class _PackageDeatilState extends State<PackageDeatil> {
                             ),
                           ),
                           SizedBox(
-                            height: 20.0,
+                            height: 10.0,
                           ),
                           Padding(
                             padding: EdgeInsets.all(20.0),
@@ -99,10 +99,19 @@ class _PackageDeatilState extends State<PackageDeatil> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "ถึงคุณ " + name,
+                                  "สถานะ : ไม่พบเจ้าของ",
                                   style: TextStyle(
                                       fontFamily: "Spartan",
                                       fontSize: 20,
+                                      color: Colors.red[400],
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "ถึงคุณ " + name,
+                                  style: TextStyle(
+                                      fontFamily: "Spartan",
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(height: 10),
@@ -110,7 +119,7 @@ class _PackageDeatilState extends State<PackageDeatil> {
                                   "หมายเลขห้อง " + no,
                                   style: TextStyle(
                                       fontFamily: "Spartan",
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 SizedBox(height: 10),
@@ -118,10 +127,10 @@ class _PackageDeatilState extends State<PackageDeatil> {
                                   "รายละเอียด",
                                   style: TextStyle(
                                       fontFamily: "Spartan",
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500),
                                 ),
-                                SizedBox(height: 10),
+                                SizedBox(height: 6),
                                 Container(
                                   child: TextFormField(
                                     readOnly: true,

@@ -6,11 +6,15 @@ import 'package:login_signup/models/register.dart';
 import 'package:login_signup/ui/DashboardAdmin/item_card.dart';
 
 class Manager extends StatefulWidget {
+  Manager(this.token);
+  var token;
   @override
-  _ManagerState createState() => _ManagerState();
+  _ManagerState createState() => _ManagerState(token);
 }
 
 class _ManagerState extends State<Manager> {
+  _ManagerState(this.token);
+  var token;
   Future<void> onPullToRefresh() async {
     await Future.delayed(Duration(milliseconds: 500));
     setState(() {});
@@ -29,7 +33,8 @@ class _ManagerState extends State<Manager> {
               } else {
                 for (AccountModel data in snapshot.data) {
                   if (data.status == false) {
-                    users.add(Itemcard(data?.name, data?.room, data?.id));
+                    users.add(Itemcard(
+                        data?.name, data?.room, data?.id, data?.email,token));
                   }
                 }
                 if (users.length == 0) {
@@ -58,9 +63,7 @@ class _ManagerState extends State<Manager> {
                         itemCount: users.length,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: EdgeInsets.all(8),
-                            child: users[index]
-                            );
+                              padding: EdgeInsets.all(8), child: users[index]);
                         },
                       ));
                 }

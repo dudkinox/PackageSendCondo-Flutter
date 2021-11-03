@@ -30,13 +30,6 @@ class _HomeUserState extends State<HomeUser> {
   final InfiniteScrollController _infiniteController = InfiniteScrollController(
     initialScrollOffset: 0.0,
   );
-  List<Artist> artists = [
-    Artist(
-        name: "นิติบุคคล",
-        photoUrl:
-            "https://img.icons8.com/glyph-neue/64/000000/online-support.png"),
-  ];
-  List<Art> arts;
 
   Future<void> onPullToRefresh() async {
     await Future.delayed(Duration(milliseconds: 500));
@@ -45,14 +38,6 @@ class _HomeUserState extends State<HomeUser> {
 
   void initState() {
     super.initState();
-    arts = [
-      Art(
-          title: "พัสดุ",
-          description: "ขนาด 400 กรัม จากปทุมธานี",
-          imageUrl:
-              "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa4VWinsqoh5YSSbradjNkO0KCo2DL6rBtszi8fUBs61cuB2Szv8C.jpg",
-          artist: artists[0]),
-    ];
   }
 
   @override
@@ -68,8 +53,8 @@ class _HomeUserState extends State<HomeUser> {
             backgroundColor: Color(0xFFFEA4B0),
             bottom: const TabBar(
               tabs: <Widget>[
-                Tab(text: 'รายการ'),
-                Tab(text: 'แก้ไขข้อมูลส่วนตัว'),
+                Tab(text: 'รายการพัสดุ',icon: Icon(Icons.archive_outlined),),
+                Tab(text: 'แก้ไขข้อมูลส่วนตัว',icon: Icon(Icons.edit)),
               ],
             ),
           ),
@@ -114,7 +99,7 @@ class _HomeUserState extends State<HomeUser> {
                     SliverFillRemaining(
                       child: Container(
                         child: Center(
-                          child: Text("ไม่พบข้อมูล",
+                          child: Text("ไม่พบพัสดุของท่าน",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,

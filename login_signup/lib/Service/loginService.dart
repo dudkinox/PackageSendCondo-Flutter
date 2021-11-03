@@ -188,24 +188,6 @@ Future<String> ChangePasswordForGot(String password, String token) async {
   }
 }
 
-Future<String> AcceptUser(
-  String token,
-) async {
-  try {
-    final String Url = Host + "/api/login/" + token;
-    final response = await http.put(
-      Uri.parse(Url),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{"status": true}),
-    );
-    return "ยอมรับสำเร็จ";
-  } catch (e) {
-    print(e);
-  }
-}
-
 Future<List<AccountModel>> DataUser() async {
   final String url = Host + "/api/login";
   final response = await http.get(

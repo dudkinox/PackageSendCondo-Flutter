@@ -2,85 +2,109 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:login_signup/Service/emailService.dart';
 import 'package:login_signup/Service/loginService.dart';
 import 'package:login_signup/components/HomeAdmin.dart';
 import 'package:login_signup/components/alert.dart';
+import 'package:login_signup/components/loading.dart';
 import 'package:login_signup/models/register.dart';
 import 'package:login_signup/ui/widgets/custom_shape.dart';
 import 'package:login_signup/ui/widgets/responsive_ui.dart';
 
-class Itemcard extends StatelessWidget {
+class Itemcard extends StatefulWidget {
   final String name;
   final String room;
   final String id;
-  
-  Itemcard(this.name, this.room, this.id);
+  final String email;
+  var token;
 
+  Itemcard(this.name, this.room, this.id, this.email, this.token);
+
+  @override
+  _ItemcardState createState() => _ItemcardState(name, room, id, email, token);
+}
+
+class _ItemcardState extends State<Itemcard> {
+  String name;
+  String room;
+  String id;
+  String email;
+  var token;
+  _ItemcardState(this.name, this.room, this.id, this.email, this.token);
   double _height;
   double _width;
   double _pixelRatio;
   bool _large;
   bool _medium;
+  bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-     _height = MediaQuery.of(context).size.height;
+    _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
-    return Stack(
-      children: [
-        Opacity(
-          opacity: 0.75,
-          child: ClipPath(
-            clipper: CustomShapeClipper(),
-            child: Container(
-              height: _large
-                  ? _height / 8
-                  : (_medium ? _height / 7 : _height / 6.5),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.orange[200], Colors.pinkAccent],
+    return loading
+        ? LoadingCube()
+        : Stack(
+            children: [
+              Opacity(
+                opacity: 0.75,
+                child: ClipPath(
+                  clipper: CustomShapeClipper(),
+                  child: Container(
+                    height: _large
+                        ? _height / 8
+                        : (_medium ? _height / 7 : _height / 6.5),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.orange[200], Colors.pinkAccent],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
-        Opacity(
-          opacity: 0.5,
-          child: ClipPath(
-            clipper: CustomShapeClipper2(),
-            child: Container(
-              height: _large
-                  ? _height / 12
-                  : (_medium ? _height / 6 : _height / 10),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.orange[200], Colors.pinkAccent],
+              Opacity(
+                opacity: 0.5,
+                child: ClipPath(
+                  clipper: CustomShapeClipper2(),
+                  child: Container(
+                    height: _large
+                        ? _height / 12
+                        : (_medium ? _height / 6 : _height / 10),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.orange[200], Colors.pinkAccent],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
-        Column(
-          children: <Widget>[
-            header(context),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.67,
-              child: Column(
-                children: [
-                  body(context),
-                  SizedBox(height: 6),
-                  footer(context),
+              Column(
+                children: <Widget>[
+                  header(context),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.67,
+                    child: Column(
+                      children: [
+                        body(context),
+                        SizedBox(height: 6),
+                        footer(context),
+                        SizedBox(height: 6),
+                      ],
+                    ),
+                  ),
                   SizedBox(height: 6),
                 ],
               ),
-            ),
-            SizedBox(height: 6),
-          ],
-        ),
-      ],
-    );
+            ],
+          );
   }
 
   Widget footer(context) {
@@ -90,19 +114,21 @@ class Itemcard extends StatelessWidget {
       children: [
         TextButton(
             onPressed: () async {
-              var status = await AcceptUser(id);
-              if (status == "ยอมรับสำเร็จ") {
+              setState(() => loading = true);
+              var status = await AcceptUserEmail(email);
+              if (status == "approve") {
                 showDialog(
                   context: context,
                   builder: (_) => AlertMessage(
-                      "แจ้งเตือน", "ยืนยันการร้องสำเร็จ", HomeAdmin(null)),
+                      "แจ้งเตือน", "ยืนยันการร้องขอสำเร็จ", HomeAdmin(token)),
                 );
               } else {
                 showDialog(
                     context: context,
-                    builder: (_) =>
-                        AlertMessage("แจ้งเตือน", "ไม่สามารถยืนยันได้", null));
+                    builder: (_) => AlertMessage(
+                        "แจ้งเตือน", "ไม่สามารถยืนยันได้", HomeAdmin(token)));
               }
+              setState(() => loading = false);
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.green[700]),
@@ -114,19 +140,21 @@ class Itemcard extends StatelessWidget {
         Spacer(),
         TextButton(
           onPressed: () async {
+            setState(() => loading = true);
             var status = await DeleteID(id);
             if (status == "ลบสำเร็จ") {
               showDialog(
                 context: context,
                 builder: (_) => AlertMessage(
-                    "แจ้งเตือน", "ปฏิเศษการร้องขอสำเร็จ", HomeAdmin(null)),
+                    "แจ้งเตือน", "ปฏิเศษการร้องขอสำเร็จ", HomeAdmin(token)),
               );
             } else {
               showDialog(
                   context: context,
-                  builder: (_) =>
-                      AlertMessage("แจ้งเตือน", "ไม่สามารถลบได้", null));
+                  builder: (_) => AlertMessage(
+                      "แจ้งเตือน", "ไม่สามารถลบได้", HomeAdmin(token)));
             }
+            setState(() => loading = false);
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.redAccent[400]),

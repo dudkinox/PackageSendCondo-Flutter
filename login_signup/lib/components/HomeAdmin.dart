@@ -49,7 +49,7 @@ class _HomeAdminState extends State<HomeAdmin> {
           ),
           body: TabBarView(
             children: <Widget>[
-              Manager(),
+              Manager(token),
               NotiPage(token),
               ManagerPackage(token)
             ],
