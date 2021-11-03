@@ -94,7 +94,7 @@ Future<List<AccountModel>> FilterID() async {
       },
     );
     List jsonResponse = json.decode(response?.body);
-  return jsonResponse.map((data) => new AccountModel.fromJson(data)).toList();
+    return jsonResponse.map((data) => new AccountModel.fromJson(data)).toList();
   } catch (e) {
     print(e);
   }
@@ -174,9 +174,7 @@ Future<String> AcceptUser(
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, dynamic>{
-        "status": true
-      }),
+      body: jsonEncode(<String, dynamic>{"status": true}),
     );
     return "ยอมรับสำเร็จ";
   } catch (e) {

@@ -2,12 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:login_signup/Model/UploadImgModel.dart';
+import 'package:login_signup/Service/UserPackageService.dart';
 import 'package:login_signup/components/InfiniteScroll.dart';
 import 'package:login_signup/components/Profile.dart';
 import 'package:login_signup/components/Wipper.dart';
+import 'package:login_signup/components/loading.dart';
 import 'package:login_signup/ui/Detail/art_detail.dart';
 import 'package:login_signup/ui/Detail/models/art.dart';
 import 'package:login_signup/ui/Detail/models/artist.dart';
+import 'package:login_signup/ui/Detail/models/packagelist.dart';
 
 class HomeUser extends StatefulWidget {
   // const HomeUser({Key key}) : super(key: key);
@@ -53,26 +57,6 @@ class _HomeUserState extends State<HomeUser> {
             automaticallyImplyLeading: false,
             title: const Text('แจ้งเตือนจากนิติบุคคล'),
             backgroundColor: Color(0xFFFEA4B0),
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.arrow_downward),
-                onPressed: () {
-                  _infiniteController.animateTo(
-                      _infiniteController.offset + 2000.0,
-                      duration: const Duration(milliseconds: 250),
-                      curve: Curves.easeIn);
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.arrow_upward),
-                onPressed: () {
-                  _infiniteController.animateTo(
-                      _infiniteController.offset - 2000.0,
-                      duration: const Duration(milliseconds: 250),
-                      curve: Curves.easeIn);
-                },
-              ),
-            ],
             bottom: const TabBar(
               tabs: <Widget>[
                 Tab(text: 'รายการ'),
@@ -92,30 +76,31 @@ class _HomeUserState extends State<HomeUser> {
   }
 
   Widget _buildTab(int tab) {
-    return InfiniteListView.separated(
-      key: PageStorageKey(tab),
-      controller: _infiniteController,
-      itemBuilder: (BuildContext context, int index) {
-        return Material(
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ArtDetail(art: arts[0])),
-              );
-            },
-            child: ListTile(
-              title: Text('หัวข้อเรื่อง $index'),
-              subtitle: Text('วันที่ 2/10/2564'),
-              trailing: const Icon(Icons.chevron_right),
-            ),
-          ),
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) =>
-          const Divider(height: 2.0),
-      anchor: 0.5,
-    );
+    return FutureBuilder<List<NotiPackageModel>>(
+        future: GetPackage(),
+        builder: (context, AsyncSnapshot snapshot) {
+          List datapackage = [];
+          if (snapshot?.connectionState != ConnectionState.done) {
+            return LoadingCube();
+          } else {
+            for (NotiPackageModel data in snapshot.data) {
+              if (data.status == false) {
+                datapackage.add(PackageDetail(
+                  data?.id, 
+                  data?.image, 
+                  data?.message,
+                  data?.name, 
+                  data?.no, 
+                  data?.status));
+              }
+            }
+            return ListView?.builder(
+              itemCount: datapackage.length,
+              itemBuilder: (context, index) {
+                return datapackage[index];
+              },
+            );
+          }
+        });
   }
 }

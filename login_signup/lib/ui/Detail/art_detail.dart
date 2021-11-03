@@ -1,133 +1,218 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_signup/Model/UploadImgModel.dart';
+import 'package:login_signup/Service/UserPackageService.dart';
 import 'package:login_signup/components/HomeUser.dart';
-
-import 'models/art.dart';
+import 'package:login_signup/components/alert.dart';
+import 'package:login_signup/components/loading.dart';
 
 class ArtDetail extends StatefulWidget {
-  Art art;
-  ArtDetail({this.art , this.token});
-  var token;
+  ArtDetail(this.id, this.image, this.message, this.name, this.no, this.status);
+  final String id;
+  final String image;
+  final String message;
+  final String name;
+  final String no;
+  final bool status;
+
   @override
-  _ArtDetailState createState() => _ArtDetailState(token);
+  _ArtDetailState createState() =>
+      _ArtDetailState(id, image, message, name, no, status);
 }
 
 class _ArtDetailState extends State<ArtDetail> {
-  _ArtDetailState(this.token);
-  var token;
+  _ArtDetailState(
+      this.id, this.image, this.message, this.name, this.no, this.status);
+  final String id;
+  final String image;
+  final String message;
+  final String name;
+  final String no;
+  final bool status;
+  bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(widget.art.imageUrl),
-                      fit: BoxFit.cover)),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, top: 40),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    IconButton(
-                      icon:
-                          Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                      onPressed: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeUser(token)),
-                        ),
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(widget.art.title,
-                      style: TextStyle(
-                          fontFamily: "Spartan",
-                          fontSize: 38,
-                          fontWeight: FontWeight.w500)),
-                  SizedBox(height: 30),
-                  Text(widget.art.description,
-                      style: TextStyle(
-                          fontFamily: "Spartan",
-                          fontSize: 16,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w400)),
-                  SizedBox(height: 60),
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundImage:
-                              NetworkImage(widget.art.artist.photoUrl),
-                        ),
-                        SizedBox(width: 15),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              widget.art.artist.name,
-                              style: TextStyle(
-                                  fontFamily: "Spartan",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
+    return loading
+        ? LoadingCube()
+        : Material(
+            child: FutureBuilder<ResumeModel>(
+              future: ImageDetail(image),
+              builder: (context, snapshot) {
+                if (snapshot?.connectionState != ConnectionState.done) {
+                  return LoadingCube();
+                } else {
+                  return Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 350.0,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(snapshot.data.link),
+                                  fit: BoxFit.cover),
                             ),
-                            SizedBox(height: 5),
-                          ],
-                        ),
-                      ],
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: 160.0, left: 20.0, right: 20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      height: 50.0,
+                                      width: 50.0,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        color: Colors.white.withOpacity(0.5),
+                                      ),
+                                      child: Icon(Icons.arrow_back),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "ถึงคุณ " + name,
+                                  style: TextStyle(
+                                      fontFamily: "Spartan",
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "หมายเลขห้อง " + no,
+                                  style: TextStyle(
+                                      fontFamily: "Spartan",
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "รายละเอียด",
+                                  style: TextStyle(
+                                      fontFamily: "Spartan",
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Container(
+                                  child: TextFormField(
+                                    readOnly: true,
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: 8,
+                                    decoration: new InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.black, width: 5.0),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.black26,
+                                              width: 5.0),
+                                        ),
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.only(
+                                            left: 15,
+                                            bottom: 11,
+                                            top: 11,
+                                            right: 15),
+                                        hintText: message),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    FlatButton(
+                                      child: Text(
+                                        'รับพัสดุแล้ว',
+                                        style: TextStyle(fontSize: 20.0),
+                                      ),
+                                      color: Colors.green,
+                                      textColor: Colors.white,
+                                      onPressed: () async {
+                                        // setState(() => loading = true);
+                                        final String datalist =
+                                            await AcceptPackage(no, image,
+                                                message, name, status);
+                                        if (datalist == "แก้ไขข้อมูลแล้ว") {
+                                          showDialog(
+                                              context: context,
+                                              builder: (_) => AlertMessage(
+                                                  "แจ้งเตือน",
+                                                  "แก้ไขข้อมูลสำเร็จ",
+                                                  HomeUser(id)));
+                                        } else {
+                                          showDialog(
+                                              context: context,
+                                              builder: (_) => AlertMessage(
+                                                  "แจ้งเตือน",
+                                                  "Server มีปัญหา ปิดปรับปรุงชั่วคราว กรุณาลองใหม่ภายหลัง",
+                                                  null));
+                                        }
+                                        setState(() => loading = false);
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FlatButton(
+                                      child: Text(
+                                        'ไม่ใช่ของฉัน',
+                                        style: TextStyle(fontSize: 20.0),
+                                      ),
+                                      color: Colors.red,
+                                      textColor: Colors.white,
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => AlertMessage(
+                                                "แจ้งเตือน",
+                                                "แก้ไขข้อมูลสำเร็จ",
+                                                HomeUser(id)));
+                                      },
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 60),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FlatButton(
-                        child: Text(
-                          'รับพัสดุแล้ว',
-                          style: TextStyle(fontSize: 20.0),
-                        ),
-                        color: Colors.green,
-                        textColor: Colors.white,
-                        onPressed: () {},
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      FlatButton(
-                        child: Text(
-                          'ไม่ใช่ของฉัน',
-                          style: TextStyle(fontSize: 20.0),
-                        ),
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                  );
+                }
+              },
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }

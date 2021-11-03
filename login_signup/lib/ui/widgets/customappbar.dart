@@ -20,7 +20,6 @@ class CustomAppBar extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.arrow_back,),
                 onPressed: (){
-                  print("pop");
                   Navigator.of(context).pop();
             })
           ],

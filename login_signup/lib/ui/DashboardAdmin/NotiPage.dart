@@ -140,7 +140,7 @@ class _NotiPageState extends State<NotiPage> {
                 var image =
                     await ImagePicker().getImage(source: ImageSource.gallery);
                 setState(() {
-                  file = File(image.path);
+                  file = File(image?.path);
                 });
               },
               child: CircleAvatar(

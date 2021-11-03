@@ -52,3 +52,43 @@ class ResumeModel {
         "link": link == null ? null : link,
       };
 }
+
+NotiPackageModel notiPackageModelFromJson(String str) => NotiPackageModel.fromJson(json.decode(str));
+
+String notiPackageModelToJson(NotiPackageModel data) => json.encode(data.toJson());
+
+class NotiPackageModel {
+    NotiPackageModel({
+        this.id,
+        this.no,
+        this.image,
+        this.message,
+        this.name,
+        this.status,
+    });
+
+    String id;
+    String no;
+    String image;
+    String message;
+    String name;
+    bool status;
+
+    factory NotiPackageModel.fromJson(Map<String, dynamic> json) => NotiPackageModel(
+        id: json["id"],
+        no: json["No"],
+        image: json["image"],
+        message: json["message"],
+        name: json["name"],
+        status: json["status"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "No": no,
+        "image": image,
+        "message": message,
+        "name": name,
+        "status": status,
+    };
+}
