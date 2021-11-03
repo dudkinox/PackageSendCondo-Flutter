@@ -44,8 +44,6 @@ class _NotiPageState extends State<NotiPage> {
   TextEditingController room = new TextEditingController();
   TextEditingController detail = new TextEditingController();
 
-
-
   @override
   void initState() {
     super.initState();
