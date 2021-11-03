@@ -255,7 +255,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   Timer _timer =
                       new Timer(const Duration(milliseconds: 1000), () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => HomeUser(login.ID)));
+                        builder: (context) => HomeUser(login.ID , login.ROOM)));
                   });
                   break;
               }

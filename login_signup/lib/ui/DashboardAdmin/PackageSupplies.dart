@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:login_signup/ui/DashboardAdmin/PackageDetail.dart';
 import 'package:login_signup/ui/Detail/art_detail.dart';
 
-class PackageDetail extends StatelessWidget {
+class PackageSupplies extends StatelessWidget {
   final String id;
   final String image;
   final String message;
   final String name;
   final String no;
   final bool status;
+  final String token;
 
-  const PackageDetail(this.id, this.image, this.message, this.name, this.no, this.status);
+  const PackageSupplies(this.id, this.image, this.message, this.name, this.no, this.status, this.token);
 
   @override
   Widget build(BuildContext context) {
@@ -20,31 +22,15 @@ class PackageDetail extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ArtDetail(id, image, message, name, no, status)
+                    builder: (context) => PackageDeatil(id, image, message, name, no, status, token)
               ));
             },
             child: ListTile(
-              title: Text('พัสดุหมายเลขห้อง ' + no ),
+              title: Text('พัสดุตกค้างไม่ทราบห้อง'),
               subtitle: Text('ยังไม่ได้รับพัสดุ'),
               trailing: const Icon(Icons.chevron_right),
             ),
           ),
-      // Column(
-      //   children: <Widget>[
-      //     header(context),
-      //     Container(
-      //       width: MediaQuery.of(context).size.width * 0.67,
-      //       child: Column(
-      //         children: [
-      //           body(context),
-      //           SizedBox(height: 6),
-
-      //         ],
-      //       ),
-      //     ),
-      //     SizedBox(height: 6),
-      //   ],
-      // ),
     );
   }
 

@@ -436,7 +436,7 @@ class MapScreenState extends State<ProfilePage>
                         showDialog(
                             context: context,
                             builder: (_) => AlertMessage("แจ้งเตือน",
-                                "แก้ไขข้อมูลสำเร็จ", HomeUser(token)));
+                                "แก้ไขข้อมูลสำเร็จ", HomeUser(token , room)));
                       } else {
                         showDialog(
                             context: context,
@@ -462,7 +462,7 @@ class MapScreenState extends State<ProfilePage>
                       showDialog(
                           context: context,
                           builder: (_) => AlertMessage("แจ้งเตือน",
-                              "แก้ไขข้อมูลสำเร็จ", HomeUser(token)));
+                              "แก้ไขข้อมูลสำเร็จ", HomeUser(token, room)));
                     } else {
                       showDialog(
                           context: context,

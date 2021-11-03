@@ -39,6 +39,7 @@ Future<NotiPackageModel> GetPackageDetail(String room) async {
 
 Future<String> AcceptPackage(
   String no,
+  String room,
   String image,
   String message,
   String name,
@@ -52,11 +53,11 @@ Future<String> AcceptPackage(
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        "No": no,
+        "No": room,
         "image": image,
         "message": message,
         "name": name,
-        "status": true
+        "status": status
       }),
     );
     

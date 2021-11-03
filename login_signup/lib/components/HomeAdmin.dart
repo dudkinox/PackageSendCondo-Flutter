@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:login_signup/components/InfiniteScroll.dart';
 import 'package:login_signup/components/Wipper.dart';
+import 'package:login_signup/ui/DashboardAdmin/ManagePackage.dart';
 import 'package:login_signup/ui/DashboardAdmin/ManageRegister.dart';
 import 'package:login_signup/ui/DashboardAdmin/NotiPage.dart';
 
@@ -24,7 +25,7 @@ class _HomeAdminState extends State<HomeAdmin> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -35,6 +36,7 @@ class _HomeAdminState extends State<HomeAdmin> {
               tabs: <Widget>[
                 Tab(text: 'จัดการผู้ใช้'),
                 Tab(text: 'ส่งแจ้งเตือน'),
+                Tab(text: 'พัสดุตกค้าง')
               ],
             ),
             leading: IconButton(
@@ -49,6 +51,7 @@ class _HomeAdminState extends State<HomeAdmin> {
             children: <Widget>[
               Manager(),
               NotiPage(token),
+              ManagerPackage(token)
             ],
           ),
         ),

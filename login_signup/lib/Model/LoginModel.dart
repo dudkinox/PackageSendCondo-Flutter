@@ -5,12 +5,14 @@ class LoginModel {
   final String USERNAME;
   final String PASSWORD;
   final String TYPE;
+  final String ROOM;
   final bool STATUS;
   LoginModel({
     this.ID,
     this.USERNAME,
     this.PASSWORD,
     this.TYPE,
+    this.ROOM,
     this.STATUS,
   });
   factory LoginModel.fromJson(final json) {
@@ -19,6 +21,7 @@ class LoginModel {
       USERNAME: json['username'],
       PASSWORD: json['password'],
       TYPE: json['type'],
+      ROOM: json['room'],
       STATUS: json['status'],
     );
   }

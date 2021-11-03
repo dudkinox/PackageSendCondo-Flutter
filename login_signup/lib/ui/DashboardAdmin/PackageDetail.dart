@@ -6,8 +6,8 @@ import 'package:login_signup/components/HomeUser.dart';
 import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/components/loading.dart';
 
-class ArtDetail extends StatefulWidget {
-  ArtDetail(this.id, this.image, this.message, this.name, this.no, this.status, this.token);
+class PackageDeatil extends StatefulWidget {
+  PackageDeatil(this.id, this.image, this.message, this.name, this.no, this.status, this.token);
   final String id;
   final String image;
   final String message;
@@ -16,12 +16,12 @@ class ArtDetail extends StatefulWidget {
   final bool status;
   var token;
   @override
-  _ArtDetailState createState() =>
-      _ArtDetailState(id, image, message, name, no, status, token);
+  _PackageDeatilState createState() =>
+      _PackageDeatilState(id, image, message, name, no, status, token);
 }
 
-class _ArtDetailState extends State<ArtDetail> {
-  _ArtDetailState(
+class _PackageDeatilState extends State<PackageDeatil> {
+  _PackageDeatilState(
       this.id, this.image, this.message, this.name, this.no, this.status, this.token);
   String id;
   String image;
@@ -165,7 +165,6 @@ class _ArtDetailState extends State<ArtDetail> {
                                         String datalist =
                                             await AcceptPackage(no, no, image,
                                                 message, name, true);
-                                                print(datalist);
                                         if (datalist == "แก้ไขข้อมูลแล้ว") {
                                           showDialog(
                                               context: context,
@@ -185,35 +184,6 @@ class _ArtDetailState extends State<ArtDetail> {
                                     ),
                                     SizedBox(
                                       width: 10,
-                                    ),
-                                    FlatButton(
-                                      child: Text(
-                                        'ไม่ใช่ของฉัน',
-                                        style: TextStyle(fontSize: 20.0),
-                                      ),
-                                      color: Colors.red,
-                                      textColor: Colors.white,
-                                      onPressed: () async {
-                                        // setState(() => loading = true);
-                                        String datalist =
-                                            await AcceptPackage(no ,"", image,
-                                                message, name, status);
-                                        if (datalist == "แก้ไขข้อมูลแล้ว") {
-                                          showDialog(
-                                              context: context,
-                                              builder: (_) => AlertMessage(
-                                                  "แจ้งเตือน",
-                                                  "พัสดุถูกส่งกลับนิติบุคคล",
-                                                  HomeUser(token , no)));
-                                        } else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (_) => AlertMessage(
-                                                  "แจ้งเตือน",
-                                                  "Server มีปัญหา ปิดปรับปรุงชั่วคราว กรุณาลองใหม่ภายหลัง",
-                                                  HomeUser(token , no)));
-                                        }
-                                      },
                                     ),
                                   ],
                                 )

@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:login_signup/Model/LoginModel.dart';
-import 'package:login_signup/Service/loginService.dart';
+import 'package:login_signup/Model/UploadImgModel.dart';
+import 'package:login_signup/Service/UserPackageService.dart';
 import 'package:login_signup/components/loading.dart';
 import 'package:login_signup/models/register.dart';
+import 'package:login_signup/ui/DashboardAdmin/PackageSupplies.dart';
 import 'package:login_signup/ui/DashboardAdmin/item_card.dart';
+import 'package:login_signup/ui/Detail/packagelist.dart';
 
-class Manager extends StatefulWidget {
+class ManagerPackage extends StatefulWidget {
+  ManagerPackage(this.token);
+  var token;
+
   @override
-  _ManagerState createState() => _ManagerState();
+  _ManagerPackageState createState() => _ManagerPackageState(token);
 }
 
-class _ManagerState extends State<Manager> {
+class _ManagerPackageState extends State<ManagerPackage> {
+  _ManagerPackageState(this.token);
+  var token;
   Future<void> onPullToRefresh() async {
     await Future.delayed(Duration(milliseconds: 500));
     setState(() {});
@@ -20,16 +28,26 @@ class _ManagerState extends State<Manager> {
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(top: 10),
-        child: FutureBuilder<List<AccountModel>>(
-            future: FilterID(),
+        child: FutureBuilder<List<NotiPackageModel>>(
+            future: GetPackage(),
             builder: (context, AsyncSnapshot snapshot) {
               List users = [];
               if (snapshot?.connectionState != ConnectionState.done) {
                 return LoadingCube();
               } else {
-                for (AccountModel data in snapshot.data) {
+                for (NotiPackageModel data in snapshot.data) {
                   if (data.status == false) {
-                    users.add(Itemcard(data?.name, data?.room, data?.id));
+                    if (data.no == "") {
+                      users.add(PackageSupplies(
+                          data?.id,
+                          data?.image,
+                          data?.message,
+                          data?.name,
+                          data?.no,
+                          data?.status,
+                          token));
+                      // users.add(Itemcard(data?.name, data?.room, data?.id));
+                    }
                   }
                 }
                 if (users.length == 0) {

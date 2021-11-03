@@ -11,19 +11,22 @@ import 'package:login_signup/components/loading.dart';
 import 'package:login_signup/ui/Detail/art_detail.dart';
 import 'package:login_signup/ui/Detail/models/art.dart';
 import 'package:login_signup/ui/Detail/models/artist.dart';
-import 'package:login_signup/ui/Detail/models/packagelist.dart';
+import 'package:login_signup/ui/Detail/packagelist.dart';
 
 class HomeUser extends StatefulWidget {
   // const HomeUser({Key key}) : super(key: key);
-  HomeUser(this.token);
+  HomeUser(this.token, this.room);
   var token;
+  var room;
   @override
-  _HomeUserState createState() => _HomeUserState(token);
+  _HomeUserState createState() => _HomeUserState(token, room);
 }
 
 class _HomeUserState extends State<HomeUser> {
-  _HomeUserState(this.token);
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+  _HomeUserState(this.token, this.room);
   var token;
+  var room;
   final InfiniteScrollController _infiniteController = InfiniteScrollController(
     initialScrollOffset: 0.0,
   );
@@ -34,6 +37,12 @@ class _HomeUserState extends State<HomeUser> {
             "https://img.icons8.com/glyph-neue/64/000000/online-support.png"),
   ];
   List<Art> arts;
+
+  Future<void> onPullToRefresh() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    setState(() {});
+  }
+
   void initState() {
     super.initState();
     arts = [
@@ -85,21 +94,40 @@ class _HomeUserState extends State<HomeUser> {
           } else {
             for (NotiPackageModel data in snapshot.data) {
               if (data.status == false) {
-                datapackage.add(PackageDetail(
-                  data?.id, 
-                  data?.image, 
-                  data?.message,
-                  data?.name, 
-                  data?.no, 
-                  data?.status));
+                if (data.no == room) {
+                  datapackage.add(PackageDetail(
+                      data?.id,
+                      data?.image,
+                      data?.message,
+                      data?.name,
+                      data?.no,
+                      data?.status,
+                      token));
+                }
               }
             }
-            return ListView?.builder(
-              itemCount: datapackage.length,
-              itemBuilder: (context, index) {
-                return datapackage[index];
-              },
-            );
+            if (datapackage.length == 0) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Text(
+                  "ไม่พบข้อมูล",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 23),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            } else {
+              return RefreshIndicator(
+                  onRefresh: onPullToRefresh,
+                  child: ListView?.builder(
+                    itemCount: datapackage.length,
+                    itemBuilder: (context, index) {
+                      return datapackage[index];
+                    },
+                  ));
+            }
           }
         });
   }
