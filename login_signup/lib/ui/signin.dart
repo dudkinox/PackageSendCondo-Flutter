@@ -8,6 +8,7 @@ import 'package:login_signup/Service/loginService.dart';
 import 'package:login_signup/components/HomeAdmin.dart';
 import 'package:login_signup/components/HomeUser.dart';
 import 'package:login_signup/components/alert.dart';
+import 'package:login_signup/components/loading.dart';
 import 'package:login_signup/constants/constants.dart';
 import 'package:login_signup/ui/ForgotPassword/sendEmail.dart';
 import 'package:login_signup/ui/signup.dart';
@@ -40,9 +41,16 @@ class _SignInScreenState extends State<SignInScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+  bool loading = false;
   String emailController = "";
   String passwordController = "";
   GlobalKey<FormState> _key = GlobalKey();
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +59,8 @@ class _SignInScreenState extends State<SignInScreen> {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
-    return Material(
+    return loading ? LoadingCube() :
+    Material(
       child: Container(
         height: _height,
         width: _width,
@@ -234,6 +243,7 @@ class _SignInScreenState extends State<SignInScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
+        setState(() => loading = true);
         if(emailController != "" || passwordController != ""){
           LoginModel login =
               await getLoginData(emailController, passwordController);
@@ -248,6 +258,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => HomeAdmin(login.ID)));
                   });
+                  setState(() => loading = false);
                   break;
                 case "user":
                   Scaffold.of(context)
@@ -257,6 +268,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => HomeUser(login.ID , login.ROOM)));
                   });
+                  setState(() => loading = false);
                   break;
               }
             } else {

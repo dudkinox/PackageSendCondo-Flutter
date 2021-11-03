@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup/Model/UploadImgModel.dart';
 import 'package:login_signup/Service/UserPackageService.dart';
+import 'package:login_signup/components/HomeAdmin.dart';
 import 'package:login_signup/components/HomeUser.dart';
 import 'package:login_signup/components/alert.dart';
 import 'package:login_signup/components/loading.dart';
@@ -163,7 +164,7 @@ class _PackageDeatilState extends State<PackageDeatil> {
                                       onPressed: () async {
                                         // setState(() => loading = true);
                                         String datalist =
-                                            await AcceptPackage(no, no, image,
+                                            await AcceptPackage(id, no, image,
                                                 message, name, true);
                                         if (datalist == "แก้ไขข้อมูลแล้ว") {
                                           showDialog(
@@ -171,14 +172,14 @@ class _PackageDeatilState extends State<PackageDeatil> {
                                               builder: (_) => AlertMessage(
                                                   "แจ้งเตือน",
                                                   "รับพัสดุเรียบร้อยแล้ว",
-                                                  HomeUser(token, no)));
+                                                  HomeAdmin(token)));
                                         } else {
                                           showDialog(
                                               context: context,
                                               builder: (_) => AlertMessage(
                                                   "แจ้งเตือน",
                                                   "Server มีปัญหา ปิดปรับปรุงชั่วคราว กรุณาลองใหม่ภายหลัง",
-                                                  HomeUser(token, no)));
+                                                  HomeAdmin(token)));
                                         }
                                       },
                                     ),
