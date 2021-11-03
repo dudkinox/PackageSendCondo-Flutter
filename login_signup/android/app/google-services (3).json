@@ -39,7 +39,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:308731627959:android:1109781d35a8edbd250032",
         "android_client_info": {
-          "package_name": "com.example.login_signup"
+          "package_name": "com.citizen.condo"
         }
       },
       "oauth_client": [
