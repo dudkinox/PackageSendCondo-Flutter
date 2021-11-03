@@ -20,16 +20,16 @@ dependencies:
   image_cropper: ^1.4.1
   pull_to_refresh: ^2.0.0
   flutter_local_notifications: ^4.0.1+2
-  flutter_launcher_icons: ^0.9.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.2
 
 flutter_icons:
   androind: true
   ios: true
-  image_path: "assets/images/logo.png"
+  image_path: "assets/icon/logo.png"
 
 flutter:
   uses-material-design: true
