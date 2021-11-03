@@ -21,7 +21,7 @@ void SendEmailForGot(BuildContext context, String mail) async {
     switch (status) {
       case "ส่งรหัส verify แล้ว":
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EmailMessage(token)));
+            MaterialPageRoute(builder: (context) => VerifyPageScreen(token)));
         break;
     }
   } else {

@@ -46,7 +46,6 @@ class _SignInScreenState extends State<SignInScreen> {
   String passwordController = "";
   GlobalKey<FormState> _key = GlobalKey();
 
-
   @override
   void initState() {
     super.initState();
@@ -59,28 +58,29 @@ class _SignInScreenState extends State<SignInScreen> {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
-    return loading ? LoadingCube() :
-    Material(
-      child: Container(
-        height: _height,
-        width: _width,
-        padding: EdgeInsets.only(bottom: 5),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              clipShape(),
-              welcomeTextRow(),
-              signInTextRow(),
-              form(),
-              forgetPassTextRow(),
-              SizedBox(height: _height / 12),
-              button(),
-              signUpTextRow(),
-            ],
-          ),
-        ),
-      ),
-    );
+    return loading
+        ? LoadingCube()
+        : Material(
+            child: Container(
+              height: _height,
+              width: _width,
+              padding: EdgeInsets.only(bottom: 5),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    clipShape(),
+                    welcomeTextRow(),
+                    signInTextRow(),
+                    form(),
+                    forgetPassTextRow(),
+                    SizedBox(height: _height / 12),
+                    button(),
+                    signUpTextRow(),
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 
   Widget clipShape() {
@@ -244,29 +244,29 @@ class _SignInScreenState extends State<SignInScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
         setState(() => loading = true);
-        if(emailController != "" || passwordController != ""){
+        if (emailController != "" || passwordController != "") {
           LoginModel login =
               await getLoginData(emailController, passwordController);
           if (login.TYPE != "") {
             if (login.STATUS != false) {
               switch (login.TYPE) {
                 case "admin":
-                  Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
+                  Scaffold.of(context).showSnackBar(
+                      SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
                   Timer _timer =
                       new Timer(const Duration(milliseconds: 1000), () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => HomeAdmin(login.ID)));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => HomeAdmin(login.ID)));
                   });
                   setState(() => loading = false);
                   break;
                 case "user":
-                  Scaffold.of(context)
-                      .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
+                  Scaffold.of(context).showSnackBar(
+                      SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')));
                   Timer _timer =
                       new Timer(const Duration(milliseconds: 1000), () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => HomeUser(login.ID , login.ROOM)));
+                        builder: (context) => HomeUser(login.ID, login.ROOM)));
                   });
                   setState(() => loading = false);
                   break;
@@ -281,13 +281,11 @@ class _SignInScreenState extends State<SignInScreen> {
             Scaffold.of(context)
                 .showSnackBar(SnackBar(content: Text('เข้าสู่ระบบผิดพลาด!')));
           }
-
         } else {
-           showDialog(
-                context: context,
-                builder: (_) => AlertMessage("แจ้งเตือน",
-                    "เข้าสู่ระบบผิดพลาด!", null));
-                    
+          showDialog(
+              context: context,
+              builder: (_) =>
+                  AlertMessage("แจ้งเตือน", "เข้าสู่ระบบผิดพลาด!", null));
         }
       },
       textColor: Colors.white,

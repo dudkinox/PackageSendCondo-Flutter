@@ -3,10 +3,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:login_signup/Database/Host.dart';
 
 Future<String> SendEmailForGotPassword(String email) async {
-  final String url =
-      "https://api-find-job-app.herokuapp.com/api/forgot/email/" + email;
+  final String url = Host + "/api/forgot/email/" + email;
   final response = await http.get(
     Uri.parse(url),
     headers: <String, String>{
@@ -18,8 +18,7 @@ Future<String> SendEmailForGotPassword(String email) async {
 }
 
 Future<String> VerifyEmail(String verify) async {
-  final String url =
-      "https://api-find-job-app.herokuapp.com/api/forgot/verify/" + verify;
+  final String url = Host + "/api/forgot/verify/" + verify;
   final response = await http.get(
     Uri.parse(url),
     headers: <String, String>{
@@ -31,8 +30,7 @@ Future<String> VerifyEmail(String verify) async {
 
 Future<String> ChangePassword(String password, String token) async {
   try {
-    final String Url =
-        "https://api-find-job-app.herokuapp.com/api/login/" + token;
+    final String Url = Host + "/api/login/" + token;
     final response = await http.put(
       Uri.parse(Url),
       headers: <String, String>{
