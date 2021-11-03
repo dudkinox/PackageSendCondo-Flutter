@@ -1,4 +1,4 @@
-package com.example.login_signup;
+package com.citizen.condo;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
